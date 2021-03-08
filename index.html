@@ -71,57 +71,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/03/04/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2021-03-04T02:15:22.700Z" itemprop="datePublished">2021-03-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/03/04/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/04/hello-world/" data-id="cklu8licz00011cojb8jd0jsf" data-title="Hello World" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
     <article id="post-CS144笔记（1）" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" class="article-date">
@@ -243,11 +192,23 @@
 - Connecctionless 不保留连接的状况，不是从建立连接开始的。
 </code></pre>
 <p>end-to-end principle: 如果可能，尽可能在end hosts处实现功能</p>
-
+<ol>
+<li>IP防止数据包反复循环（路由中的转发表损坏）<ol>
+<li>报头中，TTL 从128开始，每一跳-1，归零时被路由器丢弃，可能陷入了环路</li>
+</ol>
+</li>
+<li>会对数据包分段，路由器也会根据实际情况拆分数据包</li>
+<li>使用header校验和，在报头中。减少传递到错误目的地的机会。</li>
+<li>IP有不同的版本 IPV4 32bit， IPV6 128bit</li>
+<li>IP允许将新字段加到header中。</li>
+</ol>
+<p>IPV4 Datagram()<br>版本 区分服务 分段偏移量 校验和 协议 TTL 总长度 源地址 目标地址</p>
+<h2 id="TCP协议（传输层）"><a href="#TCP协议（传输层）" class="headerlink" title="TCP协议（传输层）"></a>TCP协议（传输层）</h2><p>IP找到机器，TCP是找到端口号向特定服务通信的。80端口一般是网页服务</p>
+<h4 id="数据包交换原则"><a href="#数据包交换原则" class="headerlink" title="数据包交换原则"></a>数据包交换原则</h4><h4 id="分层设计原则"><a href="#分层设计原则" class="headerlink" title="分层设计原则"></a>分层设计原则</h4><h4 id="封装原则"><a href="#封装原则" class="headerlink" title="封装原则"></a>封装原则</h4>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" data-id="cklu8licu00001coj8l7939sp" data-title="CS144笔记（1）" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" data-id="ckm005w2x00003dy0bx9v5z3s" data-title="CS144笔记（1）" class="article-share-link">Share</a>
       
       
       
@@ -296,7 +257,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/02/22/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" data-id="cklu8lid200031coj0l6a8mta" data-title="第一篇博客" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/02/22/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" data-id="ckm005w3200013dy0fc5nf8nx" data-title="第一篇博客" class="article-share-link">Share</a>
       
       
       
@@ -360,10 +321,6 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
-        
-          <li>
-            <a href="/2021/03/04/hello-world/">Hello World</a>
-          </li>
         
           <li>
             <a href="/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/">CS144笔记（1）</a>

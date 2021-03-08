@@ -14,7 +14,7 @@
 <meta property="og:description" content="可靠的双向字节流把计算机通信简化成读、写。 例1：www (http协议) http协议以文件为中心，Clinet向Server发送请求（GET），得到root page和一个状态码（比如200成功码，400失败码） http是人类可以理解的ASCII文本  例2：bit Bit Torrent breaks files into pieces  clients join and leave sw">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-03-02T15:01:23.000Z">
-<meta property="article:modified_time" content="2021-03-04T02:15:22.700Z">
+<meta property="article:modified_time" content="2021-03-08T03:05:55.176Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="CS144">
 <meta property="article:tag" content="计网">
@@ -196,11 +196,23 @@
 - Connecctionless 不保留连接的状况，不是从建立连接开始的。
 </code></pre>
 <p>end-to-end principle: 如果可能，尽可能在end hosts处实现功能</p>
-
+<ol>
+<li>IP防止数据包反复循环（路由中的转发表损坏）<ol>
+<li>报头中，TTL 从128开始，每一跳-1，归零时被路由器丢弃，可能陷入了环路</li>
+</ol>
+</li>
+<li>会对数据包分段，路由器也会根据实际情况拆分数据包</li>
+<li>使用header校验和，在报头中。减少传递到错误目的地的机会。</li>
+<li>IP有不同的版本 IPV4 32bit， IPV6 128bit</li>
+<li>IP允许将新字段加到header中。</li>
+</ol>
+<p>IPV4 Datagram()<br>版本 区分服务 分段偏移量 校验和 协议 TTL 总长度 源地址 目标地址</p>
+<h2 id="TCP协议（传输层）"><a href="#TCP协议（传输层）" class="headerlink" title="TCP协议（传输层）"></a>TCP协议（传输层）</h2><p>IP找到机器，TCP是找到端口号向特定服务通信的。80端口一般是网页服务</p>
+<h4 id="数据包交换原则"><a href="#数据包交换原则" class="headerlink" title="数据包交换原则"></a>数据包交换原则</h4><h4 id="分层设计原则"><a href="#分层设计原则" class="headerlink" title="分层设计原则"></a>分层设计原则</h4><h4 id="封装原则"><a href="#封装原则" class="headerlink" title="封装原则"></a>封装原则</h4>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" data-id="cklu8licu00001coj8l7939sp" data-title="CS144笔记（1）" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" data-id="ckm005w2x00003dy0bx9v5z3s" data-title="CS144笔记（1）" class="article-share-link">Share</a>
       
       
       
@@ -211,15 +223,6 @@
   
     
 <nav id="article-nav">
-  
-    <a href="/2021/03/04/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Hello World
-        
-      </div>
-    </a>
   
   
     <a href="/2021/02/22/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" id="article-nav-older" class="article-nav-link-wrap">
@@ -281,10 +284,6 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
-        
-          <li>
-            <a href="/2021/03/04/hello-world/">Hello World</a>
-          </li>
         
           <li>
             <a href="/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/">CS144笔记（1）</a>

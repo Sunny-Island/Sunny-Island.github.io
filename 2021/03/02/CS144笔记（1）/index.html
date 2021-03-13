@@ -14,7 +14,7 @@
 <meta property="og:description" content="可靠的双向字节流把计算机通信简化成读、写。 例1：www (http协议) http协议以文件为中心，Clinet向Server发送请求（GET），得到root page和一个状态码（比如200成功码，400失败码） http是人类可以理解的ASCII文本  例2：bit Bit Torrent breaks files into pieces  clients join and leave sw">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-03-02T15:01:23.000Z">
-<meta property="article:modified_time" content="2021-03-08T03:05:55.176Z">
+<meta property="article:modified_time" content="2021-03-13T13:33:45.731Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="CS144">
 <meta property="article:tag" content="计网">
@@ -208,11 +208,22 @@
 </ol>
 <p>IPV4 Datagram()<br>版本 区分服务 分段偏移量 校验和 协议 TTL 总长度 源地址 目标地址</p>
 <h2 id="TCP协议（传输层）"><a href="#TCP协议（传输层）" class="headerlink" title="TCP协议（传输层）"></a>TCP协议（传输层）</h2><p>IP找到机器，TCP是找到端口号向特定服务通信的。80端口一般是网页服务</p>
-<h4 id="数据包交换原则"><a href="#数据包交换原则" class="headerlink" title="数据包交换原则"></a>数据包交换原则</h4><h4 id="分层设计原则"><a href="#分层设计原则" class="headerlink" title="分层设计原则"></a>分层设计原则</h4><h4 id="封装原则"><a href="#封装原则" class="headerlink" title="封装原则"></a>封装原则</h4>
+<h4 id="数据包交换原则"><a href="#数据包交换原则" class="headerlink" title="数据包交换原则"></a>数据包交换原则</h4><h4 id="分层设计原则"><a href="#分层设计原则" class="headerlink" title="分层设计原则"></a>分层设计原则</h4><h4 id="封装原则"><a href="#封装原则" class="headerlink" title="封装原则"></a>封装原则</h4><ul>
+<li>分散了可能存在的隐患</li>
+<li>方便复用，各组件单独工作<ul>
+<li>应用层 message    报文</li>
+<li>传输层 TCP segment 报文段 UDP 用户数据段</li>
+<li>网络层 IP 数据报 datagram (IPV4 IPV6)，packet（包）</li>
+<li>链路层：帧 framing</li>
+<li>物理层 bit</li>
+</ul>
+</li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" data-id="ckm005w2x00003dy0bx9v5z3s" data-title="CS144笔记（1）" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" data-id="ckm7rsk6900002zrdcpjh3t2e" data-title="CS144笔记（1）" class="article-share-link">Share</a>
       
       
       
@@ -223,6 +234,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2021/03/12/CS144%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          CS144笔记(2)
+        
+      </div>
+    </a>
   
   
     <a href="/2021/02/22/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" id="article-nav-older" class="article-nav-link-wrap">
@@ -254,7 +274,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CS144/" rel="tag">CS144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test1/" rel="tag">test1</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test2/" rel="tag">test2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag">计网</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CS144/" rel="tag">CS144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash/" rel="tag">Hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test1/" rel="tag">test1</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test2/" rel="tag">test2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag">计网</a></li></ul>
     </div>
   </div>
 
@@ -264,7 +284,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CS144/" style="font-size: 10px;">CS144</a> <a href="/tags/test1/" style="font-size: 10px;">test1</a> <a href="/tags/test2/" style="font-size: 10px;">test2</a> <a href="/tags/%E8%AE%A1%E7%BD%91/" style="font-size: 10px;">计网</a>
+      <a href="/tags/CS144/" style="font-size: 20px;">CS144</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/test1/" style="font-size: 10px;">test1</a> <a href="/tags/test2/" style="font-size: 10px;">test2</a> <a href="/tags/%E8%AE%A1%E7%BD%91/" style="font-size: 20px;">计网</a>
     </div>
   </div>
 
@@ -284,6 +304,14 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/">哈希小知识</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/12/CS144%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/">CS144笔记(2)</a>
+          </li>
         
           <li>
             <a href="/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/">CS144笔记（1）</a>

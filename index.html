@@ -71,6 +71,87 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-哈希小知识" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/" class="article-date">
+  <time class="dt-published" datetime="2021-03-13T21:04:20.000Z" itemprop="datePublished">2021-03-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/">哈希小知识</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="Hash散列函数为什么要对素数取余"><a href="#Hash散列函数为什么要对素数取余" class="headerlink" title="Hash散列函数为什么要对素数取余"></a>Hash散列函数为什么要对素数取余</h3><p>假设散列函数是<br>$$<br>hash(key) = key % M= key-xm\<br>$$<br>假设key和M有公约数g<br>$$<br>key = ag,m =bg\<br>hash(key)=key-xm = key-[\frac{a}{b}]m\<br>0\le \frac{a}{b}\le a<br>$$<br>显然$hash(key)$的取值只有$a+1$种可能，在[0, m-1]上就不是均匀分布了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/" data-id="ckm7rsk6h00032zrdg1pf4knk" data-title="哈希小知识" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hash/" rel="tag">Hash</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-CS144笔记（2）" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/03/12/CS144%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/" class="article-date">
+  <time class="dt-published" datetime="2021-03-12T16:46:31.000Z" itemprop="datePublished">2021-03-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/03/12/CS144%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/">CS144笔记(2)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/03/12/CS144%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/" data-id="ckm7rsk6e00012zrd4lmt1isn" data-title="CS144笔记(2)" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CS144/" rel="tag">CS144</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag">计网</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-CS144笔记（1）" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" class="article-date">
@@ -204,11 +285,22 @@
 </ol>
 <p>IPV4 Datagram()<br>版本 区分服务 分段偏移量 校验和 协议 TTL 总长度 源地址 目标地址</p>
 <h2 id="TCP协议（传输层）"><a href="#TCP协议（传输层）" class="headerlink" title="TCP协议（传输层）"></a>TCP协议（传输层）</h2><p>IP找到机器，TCP是找到端口号向特定服务通信的。80端口一般是网页服务</p>
-<h4 id="数据包交换原则"><a href="#数据包交换原则" class="headerlink" title="数据包交换原则"></a>数据包交换原则</h4><h4 id="分层设计原则"><a href="#分层设计原则" class="headerlink" title="分层设计原则"></a>分层设计原则</h4><h4 id="封装原则"><a href="#封装原则" class="headerlink" title="封装原则"></a>封装原则</h4>
+<h4 id="数据包交换原则"><a href="#数据包交换原则" class="headerlink" title="数据包交换原则"></a>数据包交换原则</h4><h4 id="分层设计原则"><a href="#分层设计原则" class="headerlink" title="分层设计原则"></a>分层设计原则</h4><h4 id="封装原则"><a href="#封装原则" class="headerlink" title="封装原则"></a>封装原则</h4><ul>
+<li>分散了可能存在的隐患</li>
+<li>方便复用，各组件单独工作<ul>
+<li>应用层 message    报文</li>
+<li>传输层 TCP segment 报文段 UDP 用户数据段</li>
+<li>网络层 IP 数据报 datagram (IPV4 IPV6)，packet（包）</li>
+<li>链路层：帧 framing</li>
+<li>物理层 bit</li>
+</ul>
+</li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" data-id="ckm005w2x00003dy0bx9v5z3s" data-title="CS144笔记（1）" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" data-id="ckm7rsk6900002zrdcpjh3t2e" data-title="CS144笔记（1）" class="article-share-link">Share</a>
       
       
       
@@ -257,7 +349,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/02/22/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" data-id="ckm005w3200013dy0fc5nf8nx" data-title="第一篇博客" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/02/22/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" data-id="ckm7rsk6i00042zrde5fj1c95" data-title="第一篇博客" class="article-share-link">Share</a>
       
       
       
@@ -291,7 +383,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CS144/" rel="tag">CS144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test1/" rel="tag">test1</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test2/" rel="tag">test2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag">计网</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CS144/" rel="tag">CS144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash/" rel="tag">Hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test1/" rel="tag">test1</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test2/" rel="tag">test2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag">计网</a></li></ul>
     </div>
   </div>
 
@@ -301,7 +393,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CS144/" style="font-size: 10px;">CS144</a> <a href="/tags/test1/" style="font-size: 10px;">test1</a> <a href="/tags/test2/" style="font-size: 10px;">test2</a> <a href="/tags/%E8%AE%A1%E7%BD%91/" style="font-size: 10px;">计网</a>
+      <a href="/tags/CS144/" style="font-size: 20px;">CS144</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/test1/" style="font-size: 10px;">test1</a> <a href="/tags/test2/" style="font-size: 10px;">test2</a> <a href="/tags/%E8%AE%A1%E7%BD%91/" style="font-size: 20px;">计网</a>
     </div>
   </div>
 
@@ -321,6 +413,14 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/">哈希小知识</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/12/CS144%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/">CS144笔记(2)</a>
+          </li>
         
           <li>
             <a href="/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/">CS144笔记（1）</a>

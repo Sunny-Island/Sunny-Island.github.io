@@ -98,7 +98,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/" data-id="ckm7rsk6h00032zrdg1pf4knk" data-title="哈希小知识" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/" data-id="ckm8lewke00033qk51k7fgcwk" data-title="哈希小知识" class="article-share-link">Share</a>
       
       
       
@@ -134,15 +134,24 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <h3 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h3><p>计算机要把信息写到内存中，然后再通过网络发送消息。计算机之间要统一格式，方便阅读这些消息。</p>
+<h3 id="Byte-Order"><a href="#Byte-Order" class="headerlink" title="Byte Order"></a>Byte Order</h3><p>Little endian: 对计算机更有效</p>
+<p>Big endian: 方便人类阅读<br>协议选择一个：Internet都选择了Bigendian<br>但是处理器是little endian，很难受<br>host&amp;&amp;network的顺序<br>host和network之间要转换，注意这一点。network选择了Bigendian</p>
+<h3 id="Packet-Formats-IP-网络层"><a href="#Packet-Formats-IP-网络层" class="headerlink" title="Packet Formats(IP 网络层)"></a>Packet Formats(IP 网络层)</h3><p>IPV4长度是16，4个16进制数，最长是2^16<br>有目标地址，源地址<br>需要独立的，唯一的地址<br>地址长度32bits，4个八位数字<br>子网掩码：划分网路号和机器号<br>子网掩码前x是1，后32-x是0，对IP地址做与运算，结果相同的是同一个机器<br>同一个IP经过不同的子网掩码会划分出不同的机器号和网络号<br>前缀的设置涉及到子网划分<br>需要的地址块必须是2的整数幂，而且有对其要求（位于字节边界上）</p>
+<p>三类地址划分。随着主机增加，这类方法显得很粗糙</p>
+<h4 id="CIDR"><a href="#CIDR" class="headerlink" title="CIDR"></a>CIDR</h4><p>把多个具有相同前缀的地址块聚合成一个大的地址块（路由聚合）</p>
+<p>避免了路由信息爆炸。</p>
+<p>路由聚合和子网划分可以协同工作。</p>
+<p>当一个数据包到达时，路由器做最长前缀匹配，发送。</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/12/CS144%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/" data-id="ckm7rsk6e00012zrd4lmt1isn" data-title="CS144笔记(2)" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/12/CS144%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/" data-id="ckm8lewkb00013qk55gt12lwk" data-title="CS144笔记(2)" class="article-share-link">Share</a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CS144/" rel="tag">CS144</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag">计网</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CS144/" rel="tag">CS144</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IPv4/" rel="tag">IPv4</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag">计网</a></li></ul>
 
     </footer>
   </div>
@@ -300,7 +309,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" data-id="ckm7rsk6900002zrdcpjh3t2e" data-title="CS144笔记（1）" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" data-id="ckm8lewk600003qk57y6taioo" data-title="CS144笔记（1）" class="article-share-link">Share</a>
       
       
       
@@ -349,7 +358,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/02/22/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" data-id="ckm7rsk6i00042zrde5fj1c95" data-title="第一篇博客" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/02/22/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" data-id="ckm8lewke00043qk54d4s72w3" data-title="第一篇博客" class="article-share-link">Share</a>
       
       
       
@@ -383,7 +392,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CS144/" rel="tag">CS144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash/" rel="tag">Hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test1/" rel="tag">test1</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test2/" rel="tag">test2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag">计网</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CS144/" rel="tag">CS144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash/" rel="tag">Hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IPv4/" rel="tag">IPv4</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test1/" rel="tag">test1</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test2/" rel="tag">test2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag">计网</a></li></ul>
     </div>
   </div>
 
@@ -393,7 +402,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CS144/" style="font-size: 20px;">CS144</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/test1/" style="font-size: 10px;">test1</a> <a href="/tags/test2/" style="font-size: 10px;">test2</a> <a href="/tags/%E8%AE%A1%E7%BD%91/" style="font-size: 20px;">计网</a>
+      <a href="/tags/CS144/" style="font-size: 20px;">CS144</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/IPv4/" style="font-size: 10px;">IPv4</a> <a href="/tags/test1/" style="font-size: 10px;">test1</a> <a href="/tags/test2/" style="font-size: 10px;">test2</a> <a href="/tags/%E8%AE%A1%E7%BD%91/" style="font-size: 20px;">计网</a>
     </div>
   </div>
 

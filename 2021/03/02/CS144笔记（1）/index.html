@@ -3,9 +3,11 @@
 <head>
   <meta charset="utf-8">
   
-  
   <title>CS144笔记（1） | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Double" />
+  
   <meta name="description" content="可靠的双向字节流把计算机通信简化成读、写。 例1：www (http协议) http协议以文件为中心，Clinet向Server发送请求（GET），得到root page和一个状态码（比如200成功码，400失败码） http是人类可以理解的ASCII文本  例2：bit Bit Torrent breaks files into pieces  clients join and leave sw">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CS144笔记（1）">
@@ -14,90 +16,135 @@
 <meta property="og:description" content="可靠的双向字节流把计算机通信简化成读、写。 例1：www (http协议) http协议以文件为中心，Clinet向Server发送请求（GET），得到root page和一个状态码（比如200成功码，400失败码） http是人类可以理解的ASCII文本  例2：bit Bit Torrent breaks files into pieces  clients join and leave sw">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-03-02T15:01:23.000Z">
-<meta property="article:modified_time" content="2021-03-18T03:05:09.945Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2021-03-29T16:55:11.268Z">
+<meta property="article:author" content="Double">
 <meta property="article:tag" content="CS144">
 <meta property="article:tag" content="计网">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
+    <link rel="icon" href="/favicon.ico">
   
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   
 <link rel="stylesheet" href="/css/style.css">
 
   
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+<script src="/js/pace.min.js"></script>
 
   
+
+  
+  
+
 <meta name="generator" content="Hexo 5.4.0"></head>
 
 <body>
   <div id="container">
-    <div id="wrap">
       <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">Double&#39;s Blog</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a  href="/">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a  href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>Archives</span>
+                    </a>
+                    
+                    <a  href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>About</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        Double&#39;s Blog
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        分布式萌新
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="MinHow" target="_blank" href="//minhow.com">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="//github.com/wongminho">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="Weibo" target="_blank" href="//weibo.com/WongMinHo">
+                            <i class="fa fa-weibo fa-2x"></i></a>
+                    
+                        <a title="Twitter" target="_blank" href="//twitter.com/huangminhow">
+                            <i class="fa fa-twitter fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
 </header>
-
       <div class="outer">
-        <section id="main"><article id="post-CS144笔记（1）" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" class="article-date">
-  <time class="dt-published" datetime="2021-03-02T15:01:23.000Z" itemprop="datePublished">2021-03-02</time>
-</a>
-    
-  </div>
+        <section id="main" class="body-wrap"><article id="post-CS144笔记（1）" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
     
       <header class="article-header">
         
   
-    <h1 class="p-name article-title" itemprop="headline name">
+    <h1 class="post-title" itemprop="name">
       CS144笔记（1）
     </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2021-03-02
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
   
 
+          
       </header>
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    <div class="article-entry post-content" itemprop="articleBody">
       
-        <h2 id="可靠的双向字节流"><a href="#可靠的双向字节流" class="headerlink" title="可靠的双向字节流"></a>可靠的双向字节流</h2><p>把计算机通信简化成读、写。</p>
+            
+            <h2 id="可靠的双向字节流"><a href="#可靠的双向字节流" class="headerlink" title="可靠的双向字节流"></a>可靠的双向字节流</h2><p>把计算机通信简化成读、写。</p>
 <h4 id="例1：www-http协议"><a href="#例1：www-http协议" class="headerlink" title="例1：www (http协议)"></a>例1：www (http协议)</h4><ul>
 <li>http协议以文件为中心，Clinet向Server发送请求（GET），得到root page和一个状态码（比如200成功码，400失败码）</li>
 <li>http是人类可以理解的ASCII文本</li>
@@ -220,152 +267,270 @@
 </li>
 </ul>
 
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2021年03月29日 16:55</p>
+        <p>原始链接： <a class="post-url" href="/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" title="CS144笔记（1）">http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/</a></p>
+        <footer>
+            <a href="http://example.com">
+                <img src="/images/logo.png" alt="Double">
+                Double
+            </a>
+        </footer>
+    </div>
+</div>
+
       
+        
+            
+
+        
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" data-id="ckmeajfkn000008w60yds769j" data-title="CS144笔记（1）" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CS144/" rel="tag">CS144</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag">计网</a></li></ul>
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/&title=《CS144笔记（1）》 — Hexo&pic=http://example.comimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/&title=《CS144笔记（1）》 — Hexo&source=" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《CS144笔记（1）》 — Hexo&url=http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/&via=http://example.com" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://example.com/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" alt="微信分享二维码">
+</div>
 
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/CS144/" class="color1">CS144</a>
+      
+    <a href="/tags/计网/" class="color3">计网</a>
+      
+  </li>
+
+        </ul>
+        
     </footer>
   </div>
-  
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8F%AF%E9%9D%A0%E7%9A%84%E5%8F%8C%E5%90%91%E5%AD%97%E8%8A%82%E6%B5%81"><span class="post-toc-text">可靠的双向字节流</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%BE%8B1%EF%BC%9Awww-http%E5%8D%8F%E8%AE%AE"><span class="post-toc-text">例1：www (http协议)</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%BE%8B2%EF%BC%9Abit"><span class="post-toc-text">例2：bit</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Skype"><span class="post-toc-text">Skype</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9B%9B%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B"><span class="post-toc-text">四层网络模型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#IP-%E7%BD%91%E7%BB%9C%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="post-toc-text">IP(网络层协议)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#TCP%E5%8D%8F%E8%AE%AE%EF%BC%88%E4%BC%A0%E8%BE%93%E5%B1%82%EF%BC%89"><span class="post-toc-text">TCP协议（传输层）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8C%85%E4%BA%A4%E6%8D%A2%E5%8E%9F%E5%88%99"><span class="post-toc-text">数据包交换原则</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="post-toc-text">分层设计原则</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%B0%81%E8%A3%85%E5%8E%9F%E5%88%99"><span class="post-toc-text">封装原则</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
     
+
 <nav id="article-nav">
   
     <a href="/2021/03/12/CS144%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
+
+      <span class="article-nav-title">
+        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
         
           CS144笔记(2)
         
-      </div>
+      </span>
     </a>
   
   
     <a href="/2021/02/22/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">第一篇博客</div>
+      <span class="article-nav-title">第一篇博客</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
     </a>
   
 </nav>
 
-  
-</article>
 
 
+    
+          <div id="uyan_frame"></div>
+  <script src="http://v2.uyan.cc/code/uyan.js?uid=true"></script>
+
+    
 </section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/test-categories/">test_categories</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CS144/" rel="tag">CS144</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hash/" rel="tag">Hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IPv4/" rel="tag">IPv4</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test1/" rel="tag">test1</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test2/" rel="tag">test2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%BD%91/" rel="tag">计网</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/CS144/" style="font-size: 20px;">CS144</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/IPv4/" style="font-size: 10px;">IPv4</a> <a href="/tags/test1/" style="font-size: 10px;">test1</a> <a href="/tags/test2/" style="font-size: 10px;">test2</a> <a href="/tags/%E8%AE%A1%E7%BD%91/" style="font-size: 20px;">计网</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/">哈希小知识</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/12/CS144%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/">CS144笔记(2)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/">CS144笔记（1）</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/22/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">第一篇博客</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
         
       </div>
       <footer id="footer">
-  
   <div class="outer">
     <div id="footer-info" class="inner">
       
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2021 Double<br>
+      </p>
     </div>
   </div>
 </footer>
-
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://example.com",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 0
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
     </div>
-    <nav id="mobile-nav">
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/test-categories/">test_categories</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/CS144/" style="font-size: 20px;">CS144</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/IPv4/" style="font-size: 10px;">IPv4</a> <a href="/tags/test1/" style="font-size: 10px;">test1</a> <a href="/tags/test2/" style="font-size: 10px;">test2</a> <a href="/tags/%E8%AE%A1%E7%BD%91/" style="font-size: 20px;">计网</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a  href="/">
+                    <i class="fa fa-home"></i><span>Home</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/archives">
+                    <i class="fa fa-archive"></i><span>Archives</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/CS144/" style="font-size: 20px;">CS144</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/IPv4/" style="font-size: 10px;">IPv4</a> <a href="/tags/test1/" style="font-size: 10px;">test1</a> <a href="/tags/test2/" style="font-size: 10px;">test2</a> <a href="/tags/%E8%AE%A1%E7%BD%91/" style="font-size: 20px;">计网</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
   
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
+<script src="/js/particles.js"></script>
 
 
-<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
 
 
 
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  
+<script src="/js/animate.js"></script>
 
 
 
+  
+<script src="/js/pop-img.js"></script>
 
-<script src="/js/script.js"></script>
-
-
-
-
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
 
   </div>
 </body>

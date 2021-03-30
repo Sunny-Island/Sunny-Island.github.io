@@ -16,7 +16,7 @@
 <meta property="og:description" content="TCP可靠的，端到端的传输协议。双向通信&#x3D;连接。在两端TCP会留下一个状态机。三次握手建立TCPA:SynB:Syn+AckA:AckTCP:stream of bytes serviceA将数据传入TCP segment，B从segment中解析交给应用程序。可能被多次传输。最小1byte比如ssh发送大量数据：填满segment知道最大IP数据包四次挥手关闭TCPTCP的服务特点：  Stre">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-03-30T11:01:29.000Z">
-<meta property="article:modified_time" content="2021-03-30T05:18:43.993Z">
+<meta property="article:modified_time" content="2021-03-30T07:57:54.108Z">
 <meta property="article:author" content="赵家贝">
 <meta property="article:tag" content="CS144">
 <meta property="article:tag" content="计网">
@@ -179,11 +179,17 @@
 <li><p>不可靠。没有确认，没有探测乱序或者丢失的服务<br>有点像IP的服务。不提供交付保证。<br>应用:DNS,快速高效。</p>
 </li>
 </ul>
-<h2 id="ICMP"><a href="#ICMP" class="headerlink" title="ICMP"></a>ICMP</h2><p>IP， Routing Tables， ICMP 构成了网络层<br>作错误报告，路由器处理包出了意外，用于向数据源发消息，找出数据包经过的路径。<br>属于传输层协议。<br>不可靠，用于指出问题，不会重发</p>
+<h2 id="ICMP"><a href="#ICMP" class="headerlink" title="ICMP"></a>ICMP</h2><p>IP， Routing Tables， ICMP 构成了网络层<br>作错误报告，路由器处理包出了意外，用于向数据源发消息，找出数据包经过的路径。<br>属于传输层协议。<br>不可靠，用于指出问题，不会重发<br>依赖于IP层传输<br>ICMP的一个重要应用：ping，traceroter</p>
+<h2 id="End-to-end-principle"><a href="#End-to-end-principle" class="headerlink" title="End to end principle"></a>End to end principle</h2><p>为什么提供这种服务，而不采取更多服务的提供，比如压缩合并文件。</p>
+<h2 id="Error-Detection"><a href="#Error-Detection" class="headerlink" title="Error Detection"></a>Error Detection</h2><p>校验和 循环冗余码CRC 消息认证码MAC<br>不同层使用不同的方法，结合在一起使得网络的传输错误率非常低。</p>
+<h3 id="Checksum"><a href="#Checksum" class="headerlink" title="Checksum"></a>Checksum</h3><p>不可靠，简单，两个错码可能相互抵消<br>IP/TCP层使用</p>
+<h3 id="Cycli-redundancy-code"><a href="#Cycli-redundancy-code" class="headerlink" title="Cycli redundancy code"></a>Cycli redundancy code</h3><p>消耗较大，可以避免很多错误，c位校验码可以检验c位以下的所有错误。<br>在链路层常常使用，可以利用硬件快速计算。</p>
+<h3 id="Message-authentication-code"><a href="#Message-authentication-code" class="headerlink" title="Message authentication code"></a>Message authentication code</h3><p>鲁棒性强，可以抵抗恶意信息。<br>TLS层使用（应用层）</p>
+<h2 id="Finite-State-Machines"><a href="#Finite-State-Machines" class="headerlink" title="Finite State Machines"></a>Finite State Machines</h2><p>比如TCP三次握手的时候会用到。</p>
 
             <div class="post-copyright">
     <div class="content">
-        <p>最后更新： 2021年03月30日 05:18</p>
+        <p>最后更新： 2021年03月30日 07:57</p>
         <p>原始链接： <a class="post-url" href="/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" title="CS144笔记(3)">http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/</a></p>
         <footer>
             <a href="http://example.com">
@@ -274,7 +280,7 @@
 
     <aside class="post-toc-pos post-toc-top" id="post-toc">
         <nav class="post-toc-wrap">
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#TCP"><span class="post-toc-text">TCP</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#UDP"><span class="post-toc-text">UDP</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ICMP"><span class="post-toc-text">ICMP</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#TCP"><span class="post-toc-text">TCP</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#UDP"><span class="post-toc-text">UDP</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ICMP"><span class="post-toc-text">ICMP</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#End-to-end-principle"><span class="post-toc-text">End to end principle</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Error-Detection"><span class="post-toc-text">Error Detection</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Checksum"><span class="post-toc-text">Checksum</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Cycli-redundancy-code"><span class="post-toc-text">Cycli redundancy code</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Message-authentication-code"><span class="post-toc-text">Message authentication code</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Finite-State-Machines"><span class="post-toc-text">Finite State Machines</span></a></li></ol>
         </nav>
     </aside>
     

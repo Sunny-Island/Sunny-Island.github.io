@@ -42,20 +42,20 @@ menu:
 social:
   home:
     title: MinHow
-    url: //minhow.com
+    url: //https://sunny-island.github.io/
     target: true
   github:
     title: Github
-    url: //github.com/wongminho
+    url: //https://github.com/Sunny-Island
     target: true
-  weibo:
-    title: Weibo
-    url: //weibo.com/WongMinHo
-    target: true
-  twitter:
-    title: Twitter
-    url: //twitter.com/huangminhow
-    target: true
+  # weibo:
+  #   title: Weibo
+  #   url: //weibo.com/WongMinHo
+  #   target: flase
+  # twitter:
+  #   title: Twitter
+  #   url: //twitter.com/huangminhow
+  #   target: true
   #qq:
   #weixin:
   #snapchat:

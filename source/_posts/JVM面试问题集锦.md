@@ -5,16 +5,17 @@ tags:
 - JVM
 - Java
 - 面试准备
-cover_picture: https://github.com/Sunny-Island/Sunny-Island.github.io/raw/main/images/JVM_cover.jpg
+cover_picture: 
+https://raw.githubusercontent.com/Sunny-Island/Sunny-Island.github.io/main/images/JVM_cover.jpg?token=AJ7HA2M4QSNKINI72L6PTHLANXK3I
 ---
 
 前两天字节面试问到了双亲委派机制，我不知道，整理了一些JVM常见问题。
 
-0、为什么要有虚拟机（美团面试）？
+#### 0、为什么要有虚拟机（美团面试）？
 
-java先编译城.class文件，然后交给不同版本的虚拟机运行。其实java只认识JVM，但JVM可以在多个不同平台上运行。实现了code once run everywhere
+java先编译成.class文件，然后交给不同版本的虚拟机运行。其实java只认识JVM，但JVM可以在多个不同平台上运行。实现了code once run everywhere
 
-1、介绍JVM的内存区域（运行时数据区）。 ★★... 23
+####  1、介绍JVM的内存区域（运行时数据区）。 ★★... 23
 
 
 

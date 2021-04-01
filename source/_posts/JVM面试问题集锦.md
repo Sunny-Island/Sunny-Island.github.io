@@ -6,7 +6,7 @@ tags:
 - Java
 - 面试准备
 cover_picture: 
-https://raw.githubusercontent.com/Sunny-Island/Sunny-Island.github.io/main/images/JVM_cover.jpg?token=AJ7HA2M4QSNKINI72L6PTHLANXK3I
+https://raw.githubusercontent.com/Sunny-Island/Sunny-Island.github.io/main/images/JVM-cover.jpg?token=AJ7HA2M4QSNKINI72L6PTHLANXK3I
 ---
 
 前两天字节面试问到了双亲委派机制，我不知道，整理了一些JVM常见问题。
@@ -17,21 +17,27 @@ java先编译成.class文件，然后交给不同版本的虚拟机运行。其�
 
 ####  1、介绍JVM的内存区域（运行时数据区）。 ★★... 23
 
-程序计数器：
+##### 程序计数器：
 
-线程私有，记录每个线程运行的字节码的行号
+线程私有，记录每个线程运行的字节码的行号。没有OOM问题
 
-虚拟机栈：
+##### 虚拟机栈：
 
 每个线程运行期间自己的栈，用来存储局部变量表（基本数据类型，对象引用）、操作数栈、方法出口等信息，每一个方法被调用就是入栈到出栈的过程。方法出口：正常返回和异常返回。
 
-本地方法栈：
+##### 本地方法栈：
 
 native方法使用的栈，执行java字节码。
 
-堆：
+##### 堆：
 
-线程共享，GC管理的区域，存放对象实例。堆会被细分
+线程共享，GC管理的区域，存放对象实例。堆会被细分位多个线程私有的分配缓冲区，提升分配效率。目的是为了更好回收内存
+
+##### 方法区：
+
+线程共享，存储已经被加载的类型信息、常量、静态变量。可以选择不GC，但并不意味这这是永久区。
+
+运行时常量池：是方法区的一部分。Class文件中有存放编译期生成的各种字面量和符号引用，在类加载后放在方法区的运行时常量池中。具有动态性
 
 2、如何判断对象已经死亡？ ★★... 24
 

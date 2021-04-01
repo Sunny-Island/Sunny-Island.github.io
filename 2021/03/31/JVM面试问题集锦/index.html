@@ -3,24 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>CS144笔记(3) | 赵家贝的博客</title>
+  <title>JVM面试问题集锦 | 赵家贝的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <meta name="keywords" content="Double" />
   
-  <meta name="description" content="TCP可靠的，端到端的传输协议。双向通信&#x3D;连接。在两端TCP会留下一个状态机。三次握手建立TCPA:SynB:Syn+AckA:AckTCP:stream of bytes serviceA将数据传入TCP segment，B从segment中解析交给应用程序。可能被多次传输。最小1byte比如ssh发送大量数据：填满segment知道最大IP数据包四次挥手关闭TCPTCP的服务特点：  Stre">
+  <meta name="description" content="前两天字节面试问到了双亲委派机制，我不知道，整理了一些JVM常见问题。 0、为什么要有虚拟机（美团面试）？java先编译成.class文件，然后交给不同版本的虚拟机运行。其实java只认识JVM，但JVM可以在多个不同平台上运行。实现了code once run everywhere 1、介绍JVM的内存区域（运行时数据区）。 ★★… 23程序计数器：线程私有，记录每个线程运行的字节码的行号。没有">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CS144笔记(3)">
-<meta property="og:url" content="http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/index.html">
+<meta property="og:title" content="JVM面试问题集锦">
+<meta property="og:url" content="http://example.com/2021/03/31/JVM%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/index.html">
 <meta property="og:site_name" content="赵家贝的博客">
-<meta property="og:description" content="TCP可靠的，端到端的传输协议。双向通信&#x3D;连接。在两端TCP会留下一个状态机。三次握手建立TCPA:SynB:Syn+AckA:AckTCP:stream of bytes serviceA将数据传入TCP segment，B从segment中解析交给应用程序。可能被多次传输。最小1byte比如ssh发送大量数据：填满segment知道最大IP数据包四次挥手关闭TCPTCP的服务特点：  Stre">
+<meta property="og:description" content="前两天字节面试问到了双亲委派机制，我不知道，整理了一些JVM常见问题。 0、为什么要有虚拟机（美团面试）？java先编译成.class文件，然后交给不同版本的虚拟机运行。其实java只认识JVM，但JVM可以在多个不同平台上运行。实现了code once run everywhere 1、介绍JVM的内存区域（运行时数据区）。 ★★… 23程序计数器：线程私有，记录每个线程运行的字节码的行号。没有">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-03-30T11:01:29.000Z">
+<meta property="article:published_time" content="2021-03-31T22:50:31.000Z">
 <meta property="article:modified_time" content="2021-04-01T02:45:40.675Z">
 <meta property="article:author" content="赵家贝">
-<meta property="article:tag" content="CS144">
-<meta property="article:tag" content="计网">
-<meta property="article:tag" content="TCP">
+<meta property="article:tag" content="JVM">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="面试准备">
 <meta name="twitter:card" content="summary">
   
   
@@ -110,20 +110,20 @@
     </div>
 </header>
       <div class="outer">
-        <section id="main" class="body-wrap"><article id="post-CS144笔记（3）" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main" class="body-wrap"><article id="post-JVM面试问题集锦" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="post-title" itemprop="name">
-      CS144笔记(3)
+      JVM面试问题集锦
     </h1>
     <div class="post-title-bar">
       <ul>
           
         <li>
-          <i class="fa fa-calendar"></i>  2021-03-30
+          <i class="fa fa-calendar"></i>  2021-03-31
         </li>
         <li>
           <i class="fa fa-eye"></i>
@@ -139,58 +139,34 @@
     <div class="article-entry post-content" itemprop="articleBody">
       
             
-            <h2 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h2><p>可靠的，端到端的传输协议。<br>双向通信=连接。在两端TCP会留下一个状态机。<br>三次握手建立TCP<br>A:Syn<br>B:Syn+Ack<br>A:Ack<br>TCP:stream of bytes service<br>A将数据传入TCP segment，B从segment中解析交给应用程序。<br>可能被多次传输。<br>最小1byte比如ssh<br>发送大量数据：填满segment知道最大IP数据包<br>四次挥手关闭TCP<br>TCP的服务特点：</p>
-<ul>
-<li><p>Stream of bytes:可靠的字节流传输</p>
-</li>
-<li><p>Reliable delivery:</p>
-<ul>
-<li>收到信息会发送acknowledgments（ack）表示信息已经被接受</li>
-<li>checksum校验和检查是否有脏数据（每个segment都有）</li>
-<li>序列号检查是否有遗漏数据（segment lost）</li>
-<li>flow control防止接收方被淹没，接收方有空间则多发，没空间就少发</li>
-</ul>
-</li>
-<li><p>In sequence: TCP层会对收到的数据进行重新排序使之有序。</p>
-</li>
-<li><p>Congestion Control</p>
-</li>
-</ul>
-<p>为了实现上述的功能，TCP的header比较复杂。</p>
-<p>destination port,source port：把同一台主机的不同TCP连接区分开</p>
-<p>sequence number: first byte，下一个number则是上一个number+上一个length</p>
-<p>acknowledgement sequence: 当前接收到哪个字节</p>
-<p>flag位，建立连接和断开会用到ack, fin, syn 等等，还有psh要求立刻发送数据</p>
-<p>常见端口号：</p>
-<p>21 FTP</p>
-<p>22 SSH</p>
-<p>23 smtp</p>
-<p>80 HTTP</p>
-<p>443 HTTPS</p>
-<p>1433 MSSQLserver</p>
-<p>3306 MySQL</p>
-<p>11211 memcached</p>
-<p>IP中明确告诉我们使用的协议是TCP，通过端口号就可以找到对应的TCP连接。</p>
-<p>TCP还有重传，并且利用滑动窗口来做flow control。</p>
-<h2 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h2><p>应用程序不需要可靠，或者自己处理重传。<br>非常简单。标头只有4个<br>Source port, destination port<br>checksum,length<br>checksum 包含ip header<br>UDP信息可能被交付也可能不被交付。<br>UDP的服务特点：</p>
-<ul>
-<li><p>没有连接，数据包传输顺序不确定</p>
-</li>
-<li><p>不可靠。没有确认，没有探测乱序或者丢失的服务<br>有点像IP的服务。不提供交付保证。<br>应用:DNS,快速高效。</p>
-</li>
-</ul>
-<h2 id="ICMP"><a href="#ICMP" class="headerlink" title="ICMP"></a>ICMP</h2><p>IP， Routing Tables， ICMP 构成了网络层<br>作错误报告，路由器处理包出了意外，用于向数据源发消息，找出数据包经过的路径。<br>属于传输层协议。<br>不可靠，用于指出问题，不会重发<br>依赖于IP层传输<br>ICMP的一个重要应用：ping，traceroter</p>
-<h2 id="End-to-end-principle"><a href="#End-to-end-principle" class="headerlink" title="End to end principle"></a>End to end principle</h2><p>为什么提供这种服务，而不采取更多服务的提供，比如压缩合并文件。</p>
-<h2 id="Error-Detection"><a href="#Error-Detection" class="headerlink" title="Error Detection"></a>Error Detection</h2><p>校验和 循环冗余码CRC 消息认证码MAC<br>不同层使用不同的方法，结合在一起使得网络的传输错误率非常低。</p>
-<h3 id="Checksum"><a href="#Checksum" class="headerlink" title="Checksum"></a>Checksum</h3><p>不可靠，简单，两个错码可能相互抵消<br>IP/TCP层使用</p>
-<h3 id="Cycli-redundancy-code"><a href="#Cycli-redundancy-code" class="headerlink" title="Cycli redundancy code"></a>Cycli redundancy code</h3><p>消耗较大，可以避免很多错误，c位校验码可以检验c位以下的所有错误。<br>在链路层常常使用，可以利用硬件快速计算。</p>
-<h3 id="Message-authentication-code"><a href="#Message-authentication-code" class="headerlink" title="Message authentication code"></a>Message authentication code</h3><p>鲁棒性强，可以抵抗恶意信息。<br>TLS层使用（应用层）</p>
-<h2 id="Finite-State-Machines"><a href="#Finite-State-Machines" class="headerlink" title="Finite State Machines"></a>Finite State Machines</h2><p>比如TCP三次握手的时候会用到。</p>
+            <p>前两天字节面试问到了双亲委派机制，我不知道，整理了一些JVM常见问题。</p>
+<h4 id="0、为什么要有虚拟机（美团面试）？"><a href="#0、为什么要有虚拟机（美团面试）？" class="headerlink" title="0、为什么要有虚拟机（美团面试）？"></a>0、为什么要有虚拟机（美团面试）？</h4><p>java先编译成.class文件，然后交给不同版本的虚拟机运行。其实java只认识JVM，但JVM可以在多个不同平台上运行。实现了code once run everywhere</p>
+<h4 id="1、介绍JVM的内存区域（运行时数据区）。-★★…-23"><a href="#1、介绍JVM的内存区域（运行时数据区）。-★★…-23" class="headerlink" title="1、介绍JVM的内存区域（运行时数据区）。 ★★… 23"></a>1、介绍JVM的内存区域（运行时数据区）。 ★★… 23</h4><h5 id="程序计数器："><a href="#程序计数器：" class="headerlink" title="程序计数器："></a>程序计数器：</h5><p>线程私有，记录每个线程运行的字节码的行号。没有OOM问题</p>
+<h5 id="虚拟机栈："><a href="#虚拟机栈：" class="headerlink" title="虚拟机栈："></a>虚拟机栈：</h5><p>每个线程运行期间自己的栈，用来存储局部变量表（基本数据类型，对象引用）、操作数栈、方法出口等信息，每一个方法被调用就是入栈到出栈的过程。方法出口：正常返回和异常返回。</p>
+<h5 id="本地方法栈："><a href="#本地方法栈：" class="headerlink" title="本地方法栈："></a>本地方法栈：</h5><p>native方法使用的栈，执行java字节码。</p>
+<h5 id="堆："><a href="#堆：" class="headerlink" title="堆："></a>堆：</h5><p>线程共享，GC管理的区域，存放对象实例。堆会被细分位多个线程私有的分配缓冲区，提升分配效率。目的是为了更好回收内存</p>
+<h5 id="方法区："><a href="#方法区：" class="headerlink" title="方法区："></a>方法区：</h5><p>线程共享，存储已经被加载的类型信息、常量、静态变量。可以选择不GC，但并不意味这这是永久区。</p>
+<p>运行时常量池：是方法区的一部分。Class文件中有存放编译期生成的各种字面量和符号引用，在类加载后放在方法区的运行时常量池中。具有动态性</p>
+<p>2、如何判断对象已经死亡？ ★★… 24</p>
+<p>3、简述强、软、弱、虚引用。 ★… 24</p>
+<p>4、简述垃圾收集算法以及各自特点。 ★★… 25</p>
+<p>5、常见的垃圾收集器有哪些。 ★★… 26</p>
+<p>6、吞吐量优先和响应优先的垃圾收集器如何选择？… 27</p>
+<p>7、内存分配与回收策略。（对象何时进行老年代？） ★… 27</p>
+<p>8、虚拟机性能监控和故障处理工具 ★… 28</p>
+<p>9、Class类文件的结构。… 28</p>
+<p>10、简述JVM中的类加载机制。★… 28</p>
+<p>11、简述JVM中的类加载器以及双亲委派模型。 ★★… 29</p>
+<p>12、简述JVM中静态分派和动态分派（重载和重写）。… 30</p>
+<p>13、jvm启动模式之client与server（蚂蚁金服）… 30</p>
+<p>14、如何优化Java GC（蚂蚁金服） ★… 30</p>
+<p>15、JVM进程有哪些线程启动？（拼多多）… 31</p>
+<p>16、Java 8的metaspace（元空间）… <strong>31</strong></p>
 
             <div class="post-copyright">
     <div class="content">
         <p>最后更新： 2021年04月01日 02:45</p>
-        <p>原始链接： <a class="post-url" href="/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" title="CS144笔记(3)">http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/</a></p>
+        <p>原始链接： <a class="post-url" href="/2021/03/31/JVM%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/" title="JVM面试问题集锦">http://example.com/2021/03/31/JVM%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/</a></p>
         <footer>
             <a href="http://example.com">
                 <img src="/images/logo.png" alt="赵家贝">
@@ -216,7 +192,7 @@
     <div class="post-share-list" id="share-list">
         <ul class="share-icons">
           <li>
-            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/&title=《CS144笔记(3)》 — 赵家贝的博客&pic=https://raw.githubusercontent.com/Sunny-Island/Sunny-Island.github.io/main/images/TCP.jpg?token=AJ7HA2IJ42NV6EQPBRM2573ANPXOS" data-title="微博">
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://example.com/2021/03/31/JVM%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/&title=《JVM面试问题集锦》 — 赵家贝的博客&pic=https://raw.githubusercontent.com/Sunny-Island/Sunny-Island.github.io/main/images/JVM-cover.jpg?token=AJ7HA2M4QSNKINI72L6PTHLANXK3I" data-title="微博">
               <i class="fa fa-weibo"></i>
             </a>
           </li>
@@ -226,22 +202,22 @@
             </a>
           </li>
           <li>
-            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/&title=《CS144笔记(3)》 — 赵家贝的博客&source=" data-title="QQ">
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://example.com/2021/03/31/JVM%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/&title=《JVM面试问题集锦》 — 赵家贝的博客&source=" data-title="QQ">
               <i class="fa fa-qq"></i>
             </a>
           </li>
           <li>
-            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" data-title="Facebook">
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/31/JVM%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/" data-title="Facebook">
               <i class="fa fa-facebook"></i>
             </a>
           </li>
           <li>
-            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《CS144笔记(3)》 — 赵家贝的博客&url=http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/&via=http://example.com" data-title="Twitter">
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《JVM面试问题集锦》 — 赵家贝的博客&url=http://example.com/2021/03/31/JVM%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/&via=http://example.com" data-title="Twitter">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
           <li>
-            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" data-title="Google+">
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://example.com/2021/03/31/JVM%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/" data-title="Google+">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -251,7 +227,7 @@
 <div class="post-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;" id="wxShare-close">×</a>
     <p>扫一扫，分享到微信</p>
-    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" alt="微信分享二维码">
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://example.com/2021/03/31/JVM%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/" alt="微信分享二维码">
 </div>
 
 <div class="mask"></div>
@@ -263,11 +239,11 @@
   <li class="article-footer-tags">
     <i class="fa fa-tags"></i>
       
-    <a href="/tags/CS144/" class="color1">CS144</a>
+    <a href="/tags/JVM/" class="color4">JVM</a>
       
-    <a href="/tags/计网/" class="color3">计网</a>
+    <a href="/tags/Java/" class="color5">Java</a>
       
-    <a href="/tags/TCP/" class="color4">TCP</a>
+    <a href="/tags/面试准备/" class="color5">面试准备</a>
       
   </li>
 
@@ -280,26 +256,16 @@
 
     <aside class="post-toc-pos post-toc-top" id="post-toc">
         <nav class="post-toc-wrap">
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#TCP"><span class="post-toc-text">TCP</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#UDP"><span class="post-toc-text">UDP</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ICMP"><span class="post-toc-text">ICMP</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#End-to-end-principle"><span class="post-toc-text">End to end principle</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Error-Detection"><span class="post-toc-text">Error Detection</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Checksum"><span class="post-toc-text">Checksum</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Cycli-redundancy-code"><span class="post-toc-text">Cycli redundancy code</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Message-authentication-code"><span class="post-toc-text">Message authentication code</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Finite-State-Machines"><span class="post-toc-text">Finite State Machines</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#0%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%89%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%88%E7%BE%8E%E5%9B%A2%E9%9D%A2%E8%AF%95%EF%BC%89%EF%BC%9F"><span class="post-toc-text">0、为什么要有虚拟机（美团面试）？</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#1%E3%80%81%E4%BB%8B%E7%BB%8DJVM%E7%9A%84%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%EF%BC%88%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA%EF%BC%89%E3%80%82-%E2%98%85%E2%98%85%E2%80%A6-23"><span class="post-toc-text">1、介绍JVM的内存区域（运行时数据区）。 ★★… 23</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8%EF%BC%9A"><span class="post-toc-text">程序计数器：</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%EF%BC%9A"><span class="post-toc-text">虚拟机栈：</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88%EF%BC%9A"><span class="post-toc-text">本地方法栈：</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E5%A0%86%EF%BC%9A"><span class="post-toc-text">堆：</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA%EF%BC%9A"><span class="post-toc-text">方法区：</span></a></li></ol></li></ol>
         </nav>
     </aside>
     
 
 <nav id="article-nav">
   
-    <a href="/2021/03/31/JVM%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/" id="article-nav-newer" class="article-nav-link-wrap">
-
-      <span class="article-nav-title">
-        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
-        
-          JVM面试问题集锦
-        
-      </span>
-    </a>
   
-  
-    <a href="/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/" id="article-nav-older" class="article-nav-link-wrap">
-      <span class="article-nav-title">哈希小知识</span>
+    <a href="/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">CS144笔记(3)</span>
       <i class="fa fa-hand-o-right" aria-hidden="true"></i>
     </a>
   

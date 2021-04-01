@@ -5,7 +5,7 @@ tags:
 - JVM
 - Java
 - 面试准备
-cover_picture: https://raw.githubusercontent.com/Sunny-Island/Sunny-Island.github.io/main/images/JVM-cover.jpg?token=AJ7HA2M4QSNKINI72L6PTHLANXK3I
+cover_picture: https://raw.githubusercontent.com/Sunny-Island/Sunny-Island.github.io/main/images/JVM-cover.jpg?token=AJ7HA2N5HLLQ6KYQZ2Z3O2LANZXOS
 ---
 
 前两天字节面试问到了双亲委派机制，我不知道，整理了一些JVM常见问题。
@@ -15,6 +15,8 @@ cover_picture: https://raw.githubusercontent.com/Sunny-Island/Sunny-Island.githu
 java先编译成.class文件，然后交给不同版本的虚拟机运行。其实java只认识JVM，但JVM可以在多个不同平台上运行。实现了code once run everywhere
 
 ####  1、介绍JVM的内存区域（运行时数据区）。 ★★... 23
+
+![JVM-memory](..\images\JVM-memory.jpg)
 
 ##### 程序计数器：
 

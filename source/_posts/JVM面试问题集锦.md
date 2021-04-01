@@ -14,9 +14,9 @@ cover_picture: https://raw.githubusercontent.com/Sunny-Island/Sunny-Island.githu
 
 java先编译成.class文件，然后交给不同版本的虚拟机运行。其实java只认识JVM，但JVM可以在多个不同平台上运行。实现了code once run everywhere
 
-####  1、介绍JVM的内存区域（运行时数据区）。 ★★... 23
+####  1、介绍JVM的内存区域（运行时数据区）。 ★★ P34
 
-![JVM-memory](..\images\JVM-memory.jpg)
+![test](/image/JVM-memory.jpg )
 
 ##### 程序计数器：
 
@@ -40,9 +40,11 @@ native方法使用的栈，执行java字节码。
 
 运行时常量池：是方法区的一部分。Class文件中有存放编译期生成的各种字面量和符号引用，在类加载后放在方法区的运行时常量池中。具有动态性
 
-2、如何判断对象已经死亡？ ★★... 24
+2、如何判断对象已经死亡？ ★★
 
-3、简述强、软、弱、虚引用。 ★... 24
+
+
+3、简述强、软、弱、虚引用。 ★
 
 4、简述垃圾收集算法以及各自特点。 ★★... 25
 

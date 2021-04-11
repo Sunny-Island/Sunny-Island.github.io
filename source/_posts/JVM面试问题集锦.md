@@ -5,7 +5,7 @@ tags:
 - JVM
 - Java
 - 面试准备
-cover_picture: https://raw.githubusercontent.com/Sunny-Island/Sunny-Island.github.io/main/images/JVM-cover.jpg?token=AJ7HA2N5HLLQ6KYQZ2Z3O2LANZXOS
+cover_picture: https://raw.githubusercontent.com/Sunny-Island/Resources/main/images/JVM-cover.jpg
 ---
 
 前两天字节面试问到了双亲委派机制，我不知道，整理了一些JVM常见问题。

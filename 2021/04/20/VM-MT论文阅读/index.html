@@ -3,25 +3,25 @@
 <head>
   <meta charset="utf-8">
   
-  <title>CS144笔记(3) | 赵家贝的博客</title>
+  <title>VM-MT论文阅读 | 赵家贝的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <meta name="keywords" content="Double" />
   
-  <meta name="description" content="TCP可靠的，端到端的传输协议。双向通信&#x3D;连接。在两端TCP会留下一个状态机。三次握手建立TCPA:SynB:Syn+AckA:AckTCP:stream of bytes serviceA将数据传入TCP segment，B从segment中解析交给应用程序。可能被多次传输。最小1byte比如ssh发送大量数据：填满segment知道最大IP数据包四次挥手关闭TCPTCP的服务特点：  Stre">
+  <meta name="description" content="The design of a practical system for fault-tolerant virtual machinesreplica 备份方式 传内存块过去：state transfer，以保证state的相同  传操作过去：replicated state machine，使用state transfer   Primary&#x2F;Backup 机器级别vs应用程序级别该论文是在机器">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CS144笔记(3)">
-<meta property="og:url" content="http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/index.html">
+<meta property="og:title" content="VM-MT论文阅读">
+<meta property="og:url" content="http://example.com/2021/04/20/VM-MT%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
 <meta property="og:site_name" content="赵家贝的博客">
-<meta property="og:description" content="TCP可靠的，端到端的传输协议。双向通信&#x3D;连接。在两端TCP会留下一个状态机。三次握手建立TCPA:SynB:Syn+AckA:AckTCP:stream of bytes serviceA将数据传入TCP segment，B从segment中解析交给应用程序。可能被多次传输。最小1byte比如ssh发送大量数据：填满segment知道最大IP数据包四次挥手关闭TCPTCP的服务特点：  Stre">
+<meta property="og:description" content="The design of a practical system for fault-tolerant virtual machinesreplica 备份方式 传内存块过去：state transfer，以保证state的相同  传操作过去：replicated state machine，使用state transfer   Primary&#x2F;Backup 机器级别vs应用程序级别该论文是在机器">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-03-30T11:01:29.000Z">
+<meta property="og:image" content="http://example.com/image/vm-ft.jpg">
+<meta property="article:published_time" content="2021-04-20T01:22:42.000Z">
 <meta property="article:modified_time" content="2021-04-22T11:48:40.108Z">
 <meta property="article:author" content="赵家贝">
-<meta property="article:tag" content="CS144">
-<meta property="article:tag" content="计网">
-<meta property="article:tag" content="TCP">
+<meta property="article:tag" content="论文阅读">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/vm-ft.jpg">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -110,20 +110,20 @@
     </div>
 </header>
       <div class="outer">
-        <section id="main" class="body-wrap"><article id="post-CS144笔记（3）" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main" class="body-wrap"><article id="post-VM-MT论文阅读" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="post-title" itemprop="name">
-      CS144笔记(3)
+      VM-MT论文阅读
     </h1>
     <div class="post-title-bar">
       <ul>
           
         <li>
-          <i class="fa fa-calendar"></i>  2021-03-30
+          <i class="fa fa-calendar"></i>  2021-04-20
         </li>
         <li>
           <i class="fa fa-eye"></i>
@@ -139,58 +139,31 @@
     <div class="article-entry post-content" itemprop="articleBody">
       
             
-            <h2 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h2><p>可靠的，端到端的传输协议。<br>双向通信=连接。在两端TCP会留下一个状态机。<br>三次握手建立TCP<br>A:Syn<br>B:Syn+Ack<br>A:Ack<br>TCP:stream of bytes service<br>A将数据传入TCP segment，B从segment中解析交给应用程序。<br>可能被多次传输。<br>最小1byte比如ssh<br>发送大量数据：填满segment知道最大IP数据包<br>四次挥手关闭TCP<br>TCP的服务特点：</p>
-<ul>
-<li><p>Stream of bytes:可靠的字节流传输</p>
+            <h2 id="The-design-of-a-practical-system-for-fault-tolerant-virtual-machines"><a href="#The-design-of-a-practical-system-for-fault-tolerant-virtual-machines" class="headerlink" title="The design of a practical system for fault-tolerant virtual machines"></a>The design of a practical system for fault-tolerant virtual machines</h2><h3 id="replica-备份方式"><a href="#replica-备份方式" class="headerlink" title="replica 备份方式"></a>replica 备份方式</h3><ul>
+<li><p>传内存块过去：state transfer，以保证state的相同</p>
 </li>
-<li><p>Reliable delivery:</p>
-<ul>
-<li>收到信息会发送acknowledgments（ack）表示信息已经被接受</li>
-<li>checksum校验和检查是否有脏数据（每个segment都有）</li>
-<li>序列号检查是否有遗漏数据（segment lost）</li>
-<li>flow control防止接收方被淹没，接收方有空间则多发，没空间就少发</li>
-</ul>
-</li>
-<li><p>In sequence: TCP层会对收到的数据进行重新排序使之有序。</p>
-</li>
-<li><p>Congestion Control</p>
+<li><p>传操作过去：replicated state machine，使用state transfer</p>
 </li>
 </ul>
-<p>为了实现上述的功能，TCP的header比较复杂。</p>
-<p>destination port,source port：把同一台主机的不同TCP连接区分开</p>
-<p>sequence number: first byte，下一个number则是上一个number+上一个length</p>
-<p>acknowledgement sequence: 当前接收到哪个字节</p>
-<p>flag位，建立连接和断开会用到ack, fin, syn 等等，还有psh要求立刻发送数据</p>
-<p>常见端口号：</p>
-<p>21 FTP</p>
-<p>22 SSH</p>
-<p>23 smtp</p>
-<p>80 HTTP</p>
-<p>443 HTTPS</p>
-<p>1433 MSSQLserver</p>
-<p>3306 MySQL</p>
-<p>11211 memcached</p>
-<p>IP中明确告诉我们使用的协议是TCP，通过端口号就可以找到对应的TCP连接。</p>
-<p>TCP还有重传，并且利用滑动窗口来做flow control。</p>
-<h2 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h2><p>应用程序不需要可靠，或者自己处理重传。<br>非常简单。标头只有4个<br>Source port, destination port<br>checksum,length<br>checksum 包含ip header<br>UDP信息可能被交付也可能不被交付。<br>UDP的服务特点：</p>
-<ul>
-<li><p>没有连接，数据包传输顺序不确定</p>
-</li>
-<li><p>不可靠。没有确认，没有探测乱序或者丢失的服务<br>有点像IP的服务。不提供交付保证。<br>应用:DNS,快速高效。</p>
-</li>
-</ul>
-<h2 id="ICMP"><a href="#ICMP" class="headerlink" title="ICMP"></a>ICMP</h2><p>IP， Routing Tables， ICMP 构成了网络层<br>作错误报告，路由器处理包出了意外，用于向数据源发消息，找出数据包经过的路径。<br>属于传输层协议。<br>不可靠，用于指出问题，不会重发<br>依赖于IP层传输<br>ICMP的一个重要应用：ping，traceroter</p>
-<h2 id="End-to-end-principle"><a href="#End-to-end-principle" class="headerlink" title="End to end principle"></a>End to end principle</h2><p>为什么提供这种服务，而不采取更多服务的提供，比如压缩合并文件。</p>
-<h2 id="Error-Detection"><a href="#Error-Detection" class="headerlink" title="Error Detection"></a>Error Detection</h2><p>校验和 循环冗余码CRC 消息认证码MAC<br>不同层使用不同的方法，结合在一起使得网络的传输错误率非常低。</p>
-<h3 id="Checksum"><a href="#Checksum" class="headerlink" title="Checksum"></a>Checksum</h3><p>不可靠，简单，两个错码可能相互抵消<br>IP/TCP层使用</p>
-<h3 id="Cycli-redundancy-code"><a href="#Cycli-redundancy-code" class="headerlink" title="Cycli redundancy code"></a>Cycli redundancy code</h3><p>消耗较大，可以避免很多错误，c位校验码可以检验c位以下的所有错误。<br>在链路层常常使用，可以利用硬件快速计算。</p>
-<h3 id="Message-authentication-code"><a href="#Message-authentication-code" class="headerlink" title="Message authentication code"></a>Message authentication code</h3><p>鲁棒性强，可以抵抗恶意信息。<br>TLS层使用（应用层）</p>
-<h2 id="Finite-State-Machines"><a href="#Finite-State-Machines" class="headerlink" title="Finite State Machines"></a>Finite State Machines</h2><p>比如TCP三次握手的时候会用到。</p>
+<p>Primary/Backup</p>
+<h3 id="机器级别vs应用程序级别"><a href="#机器级别vs应用程序级别" class="headerlink" title="机器级别vs应用程序级别"></a>机器级别vs应用程序级别</h3><p>该论文是在机器指令级别实现主从备份，现在的分布式程序往往在应用程序之间实现备份。</p>
+<p>核心思想是让Backup像Primary一样运行，CPU指令级别上的。然后通过对于一些确定的输入，可以确定有相同的运行结果，但是对于一些不确定的事件，比如多核交互（本文只使用单核），指令中断，获取随机数，Backup需要做一些特殊处理，比如拦截中断的指令序列号让其在自己上也在特定的位置中断。</p>
+<p>为什么指令中断会影响CPU，因为中断往往来自CPU外部，比如IO设备，时间片到期等等。</p>
+<p>中断怎么被复制到Backup上？通过Intel CPU特定的硬件完成。</p>
+<p>不能让从机快于主机。</p>
+<p>由于VMM会监视输入输出，所以对于Backup机器，其输出不会被返回到客户端，只有在主机失效的时候，根据FT-protocol会切换主备份</p>
+<h3 id="FT-Protocol"><a href="#FT-Protocol" class="headerlink" title="FT-Protocol"></a>FT-Protocol</h3><p><img src="/image/vm-ft.jpg" alt="test"></p>
+<p>主机记录自己进行的指令操作，然后发给从机等待执行。从机会放到buffer中去等待执行，这样就防止了从机比主机快。</p>
+<p>如果主机fail了，从机直接对外输出</p>
+<h5 id="Output-requirement"><a href="#Output-requirement" class="headerlink" title="Output requirement"></a>Output requirement</h5><p>如果从机接管了主机，那么从机中已经被传进来的主机指令会继续执行。这样客户端就不会察觉到异常，服务会继续提供。</p>
+<p>这条规则是为了保证指令的一致性，如果主机挂掉了，从机会保持和主机一致的行为。</p>
+<h5 id="Output-rule"><a href="#Output-rule" class="headerlink" title="Output rule"></a>Output rule</h5><p>如果主机执行完就输出了，然后挂掉了，但还没给从机发自己执行过的指令操作，这样也会导致不一致。</p>
+<p>因此要求主机先不急着输出自己的执行结果，先把自己的执行指令发给从机并收到了从机的回复，然后再输出结果。</p>
 
             <div class="post-copyright">
     <div class="content">
         <p>最后更新： 2021年04月22日 11:48</p>
-        <p>原始链接： <a class="post-url" href="/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" title="CS144笔记(3)">http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/</a></p>
+        <p>原始链接： <a class="post-url" href="/2021/04/20/VM-MT%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="VM-MT论文阅读">http://example.com/2021/04/20/VM-MT%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</a></p>
         <footer>
             <a href="http://example.com">
                 <img src="/images/logo.png" alt="赵家贝">
@@ -216,7 +189,7 @@
     <div class="post-share-list" id="share-list">
         <ul class="share-icons">
           <li>
-            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/&title=《CS144笔记(3)》 — 赵家贝的博客&pic=https://raw.githubusercontent.com/Sunny-Island/Resources/main/images/TCP.jpg" data-title="微博">
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://example.com/2021/04/20/VM-MT%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/&title=《VM-MT论文阅读》 — 赵家贝的博客&pic=https://raw.githubusercontent.com/Sunny-Island/Resources/main/images/vm-ft.jpg" data-title="微博">
               <i class="fa fa-weibo"></i>
             </a>
           </li>
@@ -226,22 +199,22 @@
             </a>
           </li>
           <li>
-            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/&title=《CS144笔记(3)》 — 赵家贝的博客&source=" data-title="QQ">
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://example.com/2021/04/20/VM-MT%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/&title=《VM-MT论文阅读》 — 赵家贝的博客&source=" data-title="QQ">
               <i class="fa fa-qq"></i>
             </a>
           </li>
           <li>
-            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" data-title="Facebook">
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/04/20/VM-MT%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" data-title="Facebook">
               <i class="fa fa-facebook"></i>
             </a>
           </li>
           <li>
-            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《CS144笔记(3)》 — 赵家贝的博客&url=http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/&via=http://example.com" data-title="Twitter">
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《VM-MT论文阅读》 — 赵家贝的博客&url=http://example.com/2021/04/20/VM-MT%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/&via=http://example.com" data-title="Twitter">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
           <li>
-            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" data-title="Google+">
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://example.com/2021/04/20/VM-MT%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" data-title="Google+">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -251,7 +224,7 @@
 <div class="post-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;" id="wxShare-close">×</a>
     <p>扫一扫，分享到微信</p>
-    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://example.com/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" alt="微信分享二维码">
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://example.com/2021/04/20/VM-MT%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" alt="微信分享二维码">
 </div>
 
 <div class="mask"></div>
@@ -263,11 +236,7 @@
   <li class="article-footer-tags">
     <i class="fa fa-tags"></i>
       
-    <a href="/tags/CS144/" class="color1">CS144</a>
-      
-    <a href="/tags/计网/" class="color3">计网</a>
-      
-    <a href="/tags/TCP/" class="color4">TCP</a>
+    <a href="/tags/论文阅读/" class="color5">论文阅读</a>
       
   </li>
 
@@ -280,26 +249,16 @@
 
     <aside class="post-toc-pos post-toc-top" id="post-toc">
         <nav class="post-toc-wrap">
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#TCP"><span class="post-toc-text">TCP</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#UDP"><span class="post-toc-text">UDP</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ICMP"><span class="post-toc-text">ICMP</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#End-to-end-principle"><span class="post-toc-text">End to end principle</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Error-Detection"><span class="post-toc-text">Error Detection</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Checksum"><span class="post-toc-text">Checksum</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Cycli-redundancy-code"><span class="post-toc-text">Cycli redundancy code</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Message-authentication-code"><span class="post-toc-text">Message authentication code</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Finite-State-Machines"><span class="post-toc-text">Finite State Machines</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#The-design-of-a-practical-system-for-fault-tolerant-virtual-machines"><span class="post-toc-text">The design of a practical system for fault-tolerant virtual machines</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#replica-%E5%A4%87%E4%BB%BD%E6%96%B9%E5%BC%8F"><span class="post-toc-text">replica 备份方式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9C%BA%E5%99%A8%E7%BA%A7%E5%88%ABvs%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BA%A7%E5%88%AB"><span class="post-toc-text">机器级别vs应用程序级别</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#FT-Protocol"><span class="post-toc-text">FT-Protocol</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#Output-requirement"><span class="post-toc-text">Output requirement</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#Output-rule"><span class="post-toc-text">Output rule</span></a></li></ol></li></ol></li></ol></li></ol>
         </nav>
     </aside>
     
 
 <nav id="article-nav">
   
-    <a href="/2021/03/31/JVM%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/" id="article-nav-newer" class="article-nav-link-wrap">
-
-      <span class="article-nav-title">
-        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
-        
-          JVM面试问题集锦
-        
-      </span>
-    </a>
   
-  
-    <a href="/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/" id="article-nav-older" class="article-nav-link-wrap">
-      <span class="article-nav-title">哈希小知识</span>
+    <a href="/2021/04/14/Java%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">Java面试问题集锦</span>
       <i class="fa fa-hand-o-right" aria-hidden="true"></i>
     </a>
   

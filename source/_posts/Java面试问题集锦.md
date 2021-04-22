@@ -4,6 +4,7 @@ date: 2021-04-14 09:43:24
 tags:
 - Java
 - 面试准备
+cover_picture: https://raw.githubusercontent.com/Sunny-Island/Resources/main/images/java.jpg
 ---
 
 前两天面快手问到了Java的Map问题，答得不是很好，正好此博客长期整理各种Java面试问题。

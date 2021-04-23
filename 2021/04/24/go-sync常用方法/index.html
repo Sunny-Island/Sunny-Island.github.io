@@ -3,16 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives | 赵家贝的博客</title>
+  <title>go sync常用方法 | 赵家贝的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <meta name="keywords" content="Double" />
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="赵家贝的博客">
-<meta property="og:url" content="http://example.com/archives/index.html">
+  <meta name="description" content="Mutex WaitGroup  Add Done Wait  NewCond  Wait Broadcast  Channel  buffer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go sync常用方法">
+<meta property="og:url" content="http://example.com/2021/04/24/go-sync%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/index.html">
 <meta property="og:site_name" content="赵家贝的博客">
+<meta property="og:description" content="Mutex WaitGroup  Add Done Wait  NewCond  Wait Broadcast  Channel  buffer">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-04-24T01:31:39.000Z">
+<meta property="article:modified_time" content="2021-04-23T17:33:21.060Z">
 <meta property="article:author" content="赵家贝">
 <meta name="twitter:card" content="summary">
   
@@ -103,316 +107,150 @@
     </div>
 </header>
       <div class="outer">
-        <section id="main" class="body-wrap">
-  
-  
+        <section id="main" class="body-wrap"><article id="post-go-sync常用方法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/04/24/go-sync%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" class="archive-article-date">
-  <time datetime="2021-04-24T01:31:39.000Z" itemprop="datePublished">04-24</time>
-</a>
-      
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/04/24/go-sync%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/"  >go sync常用方法</a>
+    <h1 class="post-title" itemprop="name">
+      go sync常用方法
     </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2021-04-24
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
   
 
-    </header>
-      
-  </div>
-</article>
-
-  
+          
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/04/20/VM-MT%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="archive-article-date">
-  <time datetime="2021-04-20T01:22:42.000Z" itemprop="datePublished">04-20</time>
-</a>
+    <div class="article-entry post-content" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/04/20/VM-MT%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"  >VM-MT论文阅读</a>
-    </h1>
-  
-
-    </header>
-      
-        <div class="archive-post-footer">
             
-  <li class="article-footer-tags">
-    <i class="fa fa-tags"></i>
-      
-    <a href="/tags/论文阅读/" class="color5">论文阅读</a>
-      
-  </li>
+            <p>Mutex</p>
+<p>WaitGroup</p>
+<ul>
+<li>Add</li>
+<li>Done</li>
+<li>Wait</li>
+</ul>
+<p>NewCond</p>
+<ul>
+<li>Wait</li>
+<li>Broadcast</li>
+</ul>
+<p>Channel</p>
+<ul>
+<li>buffer</li>
+</ul>
 
-        </div>
-      
-  </div>
-</article>
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2021年04月23日 17:33</p>
+        <p>原始链接： <a class="post-url" href="/2021/04/24/go-sync%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" title="go sync常用方法">http://example.com/2021/04/24/go-sync%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/</a></p>
+        <footer>
+            <a href="http://example.com">
+                <img src="/images/logo.png" alt="赵家贝">
+                赵家贝
+            </a>
+        </footer>
+    </div>
+</div>
 
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/04/14/Java%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/" class="archive-article-date">
-  <time datetime="2021-04-14T09:43:24.000Z" itemprop="datePublished">04-14</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/04/14/Java%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/"  >Java面试问题集锦</a>
-    </h1>
-  
-
-    </header>
-      
-        <div class="archive-post-footer">
+        
             
-  <li class="article-footer-tags">
-    <i class="fa fa-tags"></i>
-      
-    <a href="/tags/Java/" class="color5">Java</a>
-      
-    <a href="/tags/面试准备/" class="color5">面试准备</a>
-      
-  </li>
 
-        </div>
-      
-  </div>
-</article>
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://example.com/2021/04/24/go-sync%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/&title=《go sync常用方法》 — 赵家贝的博客&pic=http://example.comimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://example.com/2021/04/24/go-sync%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/&title=《go sync常用方法》 — 赵家贝的博客&source=" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/04/24/go-sync%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《go sync常用方法》 — 赵家贝的博客&url=http://example.com/2021/04/24/go-sync%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/&via=http://example.com" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://example.com/2021/04/24/go-sync%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://example.com/2021/04/24/go-sync%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" alt="微信分享二维码">
+</div>
 
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/03/31/JVM%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/" class="archive-article-date">
-  <time datetime="2021-03-31T22:50:31.000Z" itemprop="datePublished">03-31</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/03/31/JVM%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/"  >JVM面试问题集锦</a>
-    </h1>
-  
+<div class="mask"></div>
 
-    </header>
-      
-        <div class="archive-post-footer">
+        
+        <ul class="article-footer-menu">
             
-  <li class="article-footer-tags">
-    <i class="fa fa-tags"></i>
-      
-    <a href="/tags/JVM/" class="color4">JVM</a>
-      
-    <a href="/tags/Java/" class="color5">Java</a>
-      
-    <a href="/tags/面试准备/" class="color5">面试准备</a>
-      
-  </li>
-
-        </div>
-      
-  </div>
-</article>
-
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" class="archive-article-date">
-  <time datetime="2021-03-30T11:01:29.000Z" itemprop="datePublished">03-30</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/"  >CS144笔记(3)</a>
-    </h1>
-  
-
-    </header>
-      
-        <div class="archive-post-footer">
             
-  <li class="article-footer-tags">
-    <i class="fa fa-tags"></i>
-      
-    <a href="/tags/CS144/" class="color1">CS144</a>
-      
-    <a href="/tags/计网/" class="color3">计网</a>
-      
-    <a href="/tags/TCP/" class="color4">TCP</a>
-      
-  </li>
-
-        </div>
-      
+        </ul>
+        
+    </footer>
   </div>
 </article>
 
+
+
+<nav id="article-nav">
   
+  
+    <a href="/2021/04/20/VM-MT%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">VM-MT论文阅读</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
     
+          <div id="uyan_frame"></div>
+  <script src="http://v2.uyan.cc/code/uyan.js?uid=true"></script>
+
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/" class="archive-article-date">
-  <time datetime="2021-03-13T21:04:20.000Z" itemprop="datePublished">03-13</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/"  >哈希小知识</a>
-    </h1>
-  
-
-    </header>
-      
-        <div class="archive-post-footer">
-            
-  <li class="article-footer-tags">
-    <i class="fa fa-tags"></i>
-      
-    <a href="/tags/Hash/" class="color5">Hash</a>
-      
-  </li>
-
-        </div>
-      
-  </div>
-</article>
-
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/03/12/CS144%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/" class="archive-article-date">
-  <time datetime="2021-03-12T16:46:31.000Z" itemprop="datePublished">03-12</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/03/12/CS144%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/"  >CS144笔记(2)</a>
-    </h1>
-  
-
-    </header>
-      
-        <div class="archive-post-footer">
-            
-  <li class="article-footer-tags">
-    <i class="fa fa-tags"></i>
-      
-    <a href="/tags/CS144/" class="color1">CS144</a>
-      
-    <a href="/tags/计网/" class="color3">计网</a>
-      
-    <a href="/tags/IPv4/" class="color5">IPv4</a>
-      
-  </li>
-
-        </div>
-      
-  </div>
-</article>
-
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/" class="archive-article-date">
-  <time datetime="2021-03-02T15:01:23.000Z" itemprop="datePublished">03-02</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/03/02/CS144%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89/"  >CS144笔记（1）</a>
-    </h1>
-  
-
-    </header>
-      
-        <div class="archive-post-footer">
-            
-  <li class="article-footer-tags">
-    <i class="fa fa-tags"></i>
-      
-    <a href="/tags/CS144/" class="color1">CS144</a>
-      
-    <a href="/tags/计网/" class="color3">计网</a>
-      
-  </li>
-
-        </div>
-      
-  </div>
-</article>
-
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2021/02/22/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" class="archive-article-date">
-  <time datetime="2021-02-22T11:10:54.000Z" itemprop="datePublished">02-22</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/02/22/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/"  >第一篇博客</a>
-    </h1>
-  
-
-    </header>
-      
-        <div class="archive-post-footer">
-            
-  <li class="article-footer-tags">
-    <i class="fa fa-tags"></i>
-      
-    <a href="/tags/test1/" class="color1">test1</a>
-      
-    <a href="/tags/test2/" class="color1">test2</a>
-      
-  </li>
-
-        </div>
-      
-  </div>
-</article>
-
-  
-  
-    </div></section>
-  
-
 </section>
         
       </div>

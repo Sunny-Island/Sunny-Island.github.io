@@ -15,13 +15,13 @@
 <meta property="og:site_name" content="赵家贝的博客">
 <meta property="og:description" content="赛题背景在赛方给定的服务器上运行winograd算法程序，以每秒浮点数计算量 GFlops 为指标评判。Winograd 算法来⾃于 CVPR 2016 的⼀篇 paper：Fast Algorithms for Convolutional Neural Networks。Winograd 算法的主要思路便是通过减少乘法次数增多加法次数来实现提速。总体上来看这是⼀个计算密集的场景，因⽽优化便在于如">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://zhaojiabei.ink/image/bloom_filter.png">
+<meta property="og:image" content="https://zhaojiabei.ink/image/winograd.png">
 <meta property="article:published_time" content="2022-02-21T20:44:40.000Z">
-<meta property="article:modified_time" content="2022-02-21T17:45:47.636Z">
+<meta property="article:modified_time" content="2022-02-21T17:53:36.769Z">
 <meta property="article:author" content="赵家贝">
 <meta property="article:tag" content="HPC">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://zhaojiabei.ink/image/bloom_filter.png">
+<meta name="twitter:image" content="https://zhaojiabei.ink/image/winograd.png">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -148,7 +148,7 @@
 <li>磁盘：需参照宿主机具体磁盘配置，⽂件系统为 Overlay</li>
 </ul>
 <p>在比赛中，我们通过分析算法特点，结合在服务器上的性能试验和队伍成员对体系结构的了解，进行了算法优化、指令级并行、数据级并行、线程级并行、编译器和内存设计等方面的优化，目的是最大限度的压榨 CPU 的运算性能。</p>
-<h3 id="算法优化"><a href="#算法优化" class="headerlink" title="算法优化"></a>算法优化</h3><p><img src="/image/bloom_filter.png" alt="算法"></p>
+<h3 id="算法优化"><a href="#算法优化" class="headerlink" title="算法优化"></a>算法优化</h3><p><img src="/image/winograd.png" alt="算法"></p>
 <p>winograd 的本质是用加法替代乘法，赛方提供的 winograd 算法是基础的 winograd(2,3) ，我们把算法扩展到了 winograd(4,3) ，同时根据<a target="_blank" rel="noopener" href="https://www.researchgate.net/publication/328091476_Sparse_Winograd_Convolutional_neural_networks_on_small-scale_systolic_arrays">2018年更新的文献中</a>的方法，同时合并多个 channel 层进行计算，从而充分利用 CPU 资源。图中的算法分为Input transform、Filter transform、 Matrix Multiplication、Output transform 四个步骤，最大的改进在于同时对多个 channel 层进行分块并在一次矩阵运算中计算，从而充分利用计算能力。</p>
 <h3 id="指令级并行"><a href="#指令级并行" class="headerlink" title="指令级并行"></a>指令级并行</h3><p>在编写代码的时候，我们从循环展开和减少分支预测两方面出发，进行指令级别的并行优化。循环展开主要是在矩阵运算中，因为要把两个固定大小的矩阵相乘，因此把乘法的每一步展开，有利于指令流水线的调度。</p>
 <h3 id="数据级并行"><a href="#数据级并行" class="headerlink" title="数据级并行"></a>数据级并行</h3><p>主要采用向量化的方法，结合算法本身的特性，进行数据级并行优化。<br>单指令流多数据流（SIMD）是能够复制多个操作数，并把它们打包在⼤型寄存器的⼀组指令集。向量化计算是⼀种常⽤于加速计算密集的并⾏任务的优化⽅法。1997 年，x86 扩展出了 MMX 指令集，伴随着 8 个向量寄存器，⾸开了向量化计算的先河。之后 x86 ⼜扩展出了 SSE 和 AVX 指令集。SSE 和 AVX 各有 16 个寄存器，同⼀个寄存器可以装载多个数据单元，并且可以⽤相应的指令在同⼀个时钟周期内进⾏并⾏运算，随着指令集的升级，每个时钟周期可以并⾏的单元数也在不断增加。<br>在我们的服务器和赛⽅提供的服务器上，我们依次实验了 AVX128，AVX256 和 AVX512 指令集，另外还使用了融合乘加指令（FMA）。</p>
@@ -165,7 +165,7 @@
 
             <div class="post-copyright">
     <div class="content">
-        <p>最后更新： 2022年02月21日 17:45</p>
+        <p>最后更新： 2022年02月21日 17:53</p>
         <p>原始链接： <a class="post-url" href="/2022/02/21/%E4%B9%9D%E5%9D%A4%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96%E5%A4%A7%E8%B5%9B%E7%AC%AC%E4%B8%80%E5%B1%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/" title="九坤并行程序优化大赛第一届经验总结">https://zhaojiabei.ink/2022/02/21/%E4%B9%9D%E5%9D%A4%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96%E5%A4%A7%E8%B5%9B%E7%AC%AC%E4%B8%80%E5%B1%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/</a></p>
         <footer>
             <a href="https://zhaojiabei.ink">
@@ -192,7 +192,7 @@
     <div class="post-share-list" id="share-list">
         <ul class="share-icons">
           <li>
-            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://zhaojiabei.ink/2022/02/21/%E4%B9%9D%E5%9D%A4%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96%E5%A4%A7%E8%B5%9B%E7%AC%AC%E4%B8%80%E5%B1%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/&title=《九坤并行程序优化大赛第一届经验总结》 — 赵家贝的博客&pic=images/winograd.png" data-title="微博">
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://zhaojiabei.ink/2022/02/21/%E4%B9%9D%E5%9D%A4%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96%E5%A4%A7%E8%B5%9B%E7%AC%AC%E4%B8%80%E5%B1%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/&title=《九坤并行程序优化大赛第一届经验总结》 — 赵家贝的博客&pic=https://raw.githubusercontent.com/Sunny-Island/Resources/main/images/winograd.png" data-title="微博">
               <i class="fa fa-weibo"></i>
             </a>
           </li>

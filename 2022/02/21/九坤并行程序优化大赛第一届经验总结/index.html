@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>九坤并行程序优化大赛第一届经验总结 | 赵家贝的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Double" />
+  
+  <meta name="description" content="赛题背景在赛方给定的服务器上运行winograd算法程序，以每秒浮点数计算量 GFlops 为指标评判。Winograd 算法来⾃于 CVPR 2016 的⼀篇 paper：Fast Algorithms for Convolutional Neural Networks。Winograd 算法的主要思路便是通过减少乘法次数增多加法次数来实现提速。总体上来看这是⼀个计算密集的场景，因⽽优化便在于如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="九坤并行程序优化大赛第一届经验总结">
+<meta property="og:url" content="https://zhaojiabei.ink/2022/02/21/%E4%B9%9D%E5%9D%A4%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96%E5%A4%A7%E8%B5%9B%E7%AC%AC%E4%B8%80%E5%B1%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="赵家贝的博客">
+<meta property="og:description" content="赛题背景在赛方给定的服务器上运行winograd算法程序，以每秒浮点数计算量 GFlops 为指标评判。Winograd 算法来⾃于 CVPR 2016 的⼀篇 paper：Fast Algorithms for Convolutional Neural Networks。Winograd 算法的主要思路便是通过减少乘法次数增多加法次数来实现提速。总体上来看这是⼀个计算密集的场景，因⽽优化便在于如">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://zhaojiabei.ink/image/bloom_filter.png">
+<meta property="article:published_time" content="2022-02-21T20:44:40.000Z">
+<meta property="article:modified_time" content="2022-02-21T17:45:47.636Z">
+<meta property="article:author" content="赵家贝">
+<meta property="article:tag" content="HPC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhaojiabei.ink/image/bloom_filter.png">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<script src="/js/pace.min.js"></script>
+
+  
+
+  
+  
+
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="赵家贝的博客" type="application/atom+xml">
+</head>
+
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">Double&#39;s Blog</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a  href="/">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a  href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>Archives</span>
+                    </a>
+                    
+                    <a  href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>About</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        Double&#39;s Blog
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        分布式萌新
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="MinHow" target="_blank" href="//https://sunny-island.github.io/">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="//https://github.com/Sunny-Island">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-九坤并行程序优化大赛第一届经验总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      九坤并行程序优化大赛第一届经验总结
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2022-02-21
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h2 id="赛题背景"><a href="#赛题背景" class="headerlink" title="赛题背景"></a>赛题背景</h2><p>在赛方给定的服务器上运行winograd算法程序，以每秒浮点数计算量 GFlops 为指标评判。Winograd 算法来⾃于 CVPR 2016 的⼀篇 paper：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1509.09308">Fast Algorithms for Convolutional Neural Networks。Winograd</a> 算法的主要思路便是通过减少乘法次数增多加法次数来实现提速。总体上来看这是⼀个计算密集的场景，因⽽优化便在于如果最⼤程度压榨出服务器 CPU 的性能。</p>
+<p>服务器环境如下：</p>
+<ul>
+<li>CPU：Intel(R) Xeon(R) Gold 6348 CPU @ 2.60GHz</li>
+<li>内存：768 GB</li>
+<li>磁盘：需参照宿主机具体磁盘配置，⽂件系统为 Overlay</li>
+</ul>
+<p>在比赛中，我们通过分析算法特点，结合在服务器上的性能试验和队伍成员对体系结构的了解，进行了算法优化、指令级并行、数据级并行、线程级并行、编译器和内存设计等方面的优化，目的是最大限度的压榨 CPU 的运算性能。</p>
+<h3 id="算法优化"><a href="#算法优化" class="headerlink" title="算法优化"></a>算法优化</h3><p><img src="/image/bloom_filter.png" alt="算法"></p>
+<p>winograd 的本质是用加法替代乘法，赛方提供的 winograd 算法是基础的 winograd(2,3) ，我们把算法扩展到了 winograd(4,3) ，同时根据<a target="_blank" rel="noopener" href="https://www.researchgate.net/publication/328091476_Sparse_Winograd_Convolutional_neural_networks_on_small-scale_systolic_arrays">2018年更新的文献中</a>的方法，同时合并多个 channel 层进行计算，从而充分利用 CPU 资源。图中的算法分为Input transform、Filter transform、 Matrix Multiplication、Output transform 四个步骤，最大的改进在于同时对多个 channel 层进行分块并在一次矩阵运算中计算，从而充分利用计算能力。</p>
+<h3 id="指令级并行"><a href="#指令级并行" class="headerlink" title="指令级并行"></a>指令级并行</h3><p>在编写代码的时候，我们从循环展开和减少分支预测两方面出发，进行指令级别的并行优化。循环展开主要是在矩阵运算中，因为要把两个固定大小的矩阵相乘，因此把乘法的每一步展开，有利于指令流水线的调度。</p>
+<h3 id="数据级并行"><a href="#数据级并行" class="headerlink" title="数据级并行"></a>数据级并行</h3><p>主要采用向量化的方法，结合算法本身的特性，进行数据级并行优化。<br>单指令流多数据流（SIMD）是能够复制多个操作数，并把它们打包在⼤型寄存器的⼀组指令集。向量化计算是⼀种常⽤于加速计算密集的并⾏任务的优化⽅法。1997 年，x86 扩展出了 MMX 指令集，伴随着 8 个向量寄存器，⾸开了向量化计算的先河。之后 x86 ⼜扩展出了 SSE 和 AVX 指令集。SSE 和 AVX 各有 16 个寄存器，同⼀个寄存器可以装载多个数据单元，并且可以⽤相应的指令在同⼀个时钟周期内进⾏并⾏运算，随着指令集的升级，每个时钟周期可以并⾏的单元数也在不断增加。<br>在我们的服务器和赛⽅提供的服务器上，我们依次实验了 AVX128，AVX256 和 AVX512 指令集，另外还使用了融合乘加指令（FMA）。</p>
+<h3 id="线程级并行"><a href="#线程级并行" class="headerlink" title="线程级并行"></a>线程级并行</h3><p>尝试通过引⼊ openmp 多线程进⾏矩阵运算，但并⾏的性能⼀直不如串⾏，甚⾄经过实验发现有线程数加倍性能减半的现象。经过分析发现在示例代码中有⼤量的⼩矩阵运算，⽐如在第⼀部分逐 channel 逐卷积核的矩阵相乘中有⼤量的⼤⼩为 4 的矩阵，矩阵太⼩导致分给每个线程的任务过少，线程本身的调度开销⼤于多线程带来的收益，因此多线程在这种运算中是⼀种负优化。为了引⼊并⾏加快速度，我们单独为中间的⼤矩阵运算编写了加⼊了多线程的函数，⼩矩阵运算则不加多线程。此优化有近 5 倍的提升。</p>
+<p>在之后的优化中，我们放弃了自己编写矩阵乘法，通过调用MKL库来进行大矩阵的乘法操作。</p>
+<h3 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h3><p>以上的⼯作均是在 gcc8 版本上进⾏ O3 优化测得的，⽽ gcc 截⽌今⽇的最新版本已升级为 11.2.0，可以预⻅的是，新版本的 gcc 的调优性能会更突出，为此我<br>们升级到了最新的 gcc 11.2.0 版本并继续⽤ O3 优化进⾏了测试。此⼯作提升了近 10% 的性能。</p>
+<p>此外，我们也尝试了最新版本的 Clang/LLVM 编译器，使⽤ O3 版本编译后发现性能甚⾄不如 gcc8。虽然我们的测试不够充分，但我们猜测 LLVM 为了兼容性相<br>⽐ gcc 牺牲调了⼀定的优化空间。就如果 Java 之于 C/C++ ⼀样。</p>
+<h3 id="Profile"><a href="#Profile" class="headerlink" title="Profile"></a>Profile</h3><p>本次比赛中第一次使用 perf 进行调优。通过 perf 可以直观看到代码的各个部分的运行时间，方面我们在比赛中定位瓶颈点。另外 perf 还可以看到缓存命中、流水线停顿等信息，在后期的设计中能给到很多关键的信息。</p>
+<h3 id="比赛的不足"><a href="#比赛的不足" class="headerlink" title="比赛的不足"></a>比赛的不足</h3><p>在这次比赛中我们获得第四名，分析之下除了我们队背景知识薄弱等先天因素之外，对比获得优胜队伍的代码，我总结了这次比赛的不足之处。</p>
+<ul>
+<li>放弃编写自己的矩阵乘法，转而调用 MKL 库。因为队伍成员都没有 HPC 项目的经验，因此我们认为不可能编写出比库函数更好的代码。但优胜队伍都自己实现了矩阵乘法，针对这次比赛编写的乘法比我们更高效。</li>
+<li>因为没有编写矩阵乘法，我们对缓存的控制也比优胜队伍差很多，没有进行很好的L1、L2、L3级别的缓存设计。虽然我们在内存排布中尽量把会在一次计算中用到的数据放在一起，但如果能做好缓存设计，应该会有更好的成绩。</li>
+</ul>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2022年02月21日 17:45</p>
+        <p>原始链接： <a class="post-url" href="/2022/02/21/%E4%B9%9D%E5%9D%A4%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96%E5%A4%A7%E8%B5%9B%E7%AC%AC%E4%B8%80%E5%B1%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/" title="九坤并行程序优化大赛第一届经验总结">https://zhaojiabei.ink/2022/02/21/%E4%B9%9D%E5%9D%A4%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96%E5%A4%A7%E8%B5%9B%E7%AC%AC%E4%B8%80%E5%B1%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/</a></p>
+        <footer>
+            <a href="https://zhaojiabei.ink">
+                <img src="/images/logo.png" alt="赵家贝">
+                赵家贝
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://zhaojiabei.ink/2022/02/21/%E4%B9%9D%E5%9D%A4%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96%E5%A4%A7%E8%B5%9B%E7%AC%AC%E4%B8%80%E5%B1%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/&title=《九坤并行程序优化大赛第一届经验总结》 — 赵家贝的博客&pic=images/winograd.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://zhaojiabei.ink/2022/02/21/%E4%B9%9D%E5%9D%A4%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96%E5%A4%A7%E8%B5%9B%E7%AC%AC%E4%B8%80%E5%B1%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/&title=《九坤并行程序优化大赛第一届经验总结》 — 赵家贝的博客&source=" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://zhaojiabei.ink/2022/02/21/%E4%B9%9D%E5%9D%A4%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96%E5%A4%A7%E8%B5%9B%E7%AC%AC%E4%B8%80%E5%B1%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《九坤并行程序优化大赛第一届经验总结》 — 赵家贝的博客&url=https://zhaojiabei.ink/2022/02/21/%E4%B9%9D%E5%9D%A4%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96%E5%A4%A7%E8%B5%9B%E7%AC%AC%E4%B8%80%E5%B1%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/&via=https://zhaojiabei.ink" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://zhaojiabei.ink/2022/02/21/%E4%B9%9D%E5%9D%A4%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96%E5%A4%A7%E8%B5%9B%E7%AC%AC%E4%B8%80%E5%B1%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://zhaojiabei.ink/2022/02/21/%E4%B9%9D%E5%9D%A4%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96%E5%A4%A7%E8%B5%9B%E7%AC%AC%E4%B8%80%E5%B1%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/HPC/" class="color4">HPC</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%B5%9B%E9%A2%98%E8%83%8C%E6%99%AF"><span class="post-toc-text">赛题背景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%AE%97%E6%B3%95%E4%BC%98%E5%8C%96"><span class="post-toc-text">算法优化</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%8C%87%E4%BB%A4%E7%BA%A7%E5%B9%B6%E8%A1%8C"><span class="post-toc-text">指令级并行</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BA%A7%E5%B9%B6%E8%A1%8C"><span class="post-toc-text">数据级并行</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%BA%A7%E5%B9%B6%E8%A1%8C"><span class="post-toc-text">线程级并行</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96"><span class="post-toc-text">编译器优化</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Profile"><span class="post-toc-text">Profile</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%AF%94%E8%B5%9B%E7%9A%84%E4%B8%8D%E8%B6%B3"><span class="post-toc-text">比赛的不足</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+  
+    <a href="/2021/10/18/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">布隆过滤器</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+          <div id="uyan_frame"></div>
+  <script src="http://v2.uyan.cc/code/uyan.js?uid=true"></script>
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2022 赵家贝<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "https://zhaojiabei.ink",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 0
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/CS144/" style="font-size: 20px;">CS144</a> <a href="/tags/HPC/" style="font-size: 10px;">HPC</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/IPv4/" style="font-size: 10px;">IPv4</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/TCP/" style="font-size: 10px;">TCP</a> <a href="/tags/go/" style="font-size: 10px;">go</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;">多线程</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E8%AE%A1%E7%BD%91/" style="font-size: 20px;">计网</a> <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" style="font-size: 10px;">论文阅读</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/" style="font-size: 15px;">面试准备</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a  href="/">
+                    <i class="fa fa-home"></i><span>Home</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/archives">
+                    <i class="fa fa-archive"></i><span>Archives</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/CS144/" style="font-size: 20px;">CS144</a> <a href="/tags/HPC/" style="font-size: 10px;">HPC</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/IPv4/" style="font-size: 10px;">IPv4</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/TCP/" style="font-size: 10px;">TCP</a> <a href="/tags/go/" style="font-size: 10px;">go</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;">多线程</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E8%AE%A1%E7%BD%91/" style="font-size: 20px;">计网</a> <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" style="font-size: 10px;">论文阅读</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/" style="font-size: 15px;">面试准备</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  
+<script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  
+<script src="/js/animate.js"></script>
+
+
+
+  
+<script src="/js/pop-img.js"></script>
+
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>

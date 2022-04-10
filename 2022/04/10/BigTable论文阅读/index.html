@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>布隆过滤器 | 赵家贝的博客</title>
+  <title>Bigtable论文阅读 | 赵家贝的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <meta name="keywords" content="Double" />
   
   <meta name="description" content="前言Bigtable是管理大量结构化数据的分布式存储系统。是一个稀疏的、分布式的、持久化存储的多维度排序Map。规模：PB级别数据，数千台机器。性质：广泛应用、可扩展性、高可用，高性能，CAP？不支持传统关系模型，但可以根据数据格式和部署进行动态调整（locality, 相同前缀的数据存在一起，可以做预取优化）。用户可以动态控制何时落盘，何时从磁盘读取。其开源单机实现的版本是著名的leveldb。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="布隆过滤器">
+<meta property="og:title" content="Bigtable论文阅读">
 <meta property="og:url" content="https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
 <meta property="og:site_name" content="赵家贝的博客">
 <meta property="og:description" content="前言Bigtable是管理大量结构化数据的分布式存储系统。是一个稀疏的、分布式的、持久化存储的多维度排序Map。规模：PB级别数据，数千台机器。性质：广泛应用、可扩展性、高可用，高性能，CAP？不支持传统关系模型，但可以根据数据格式和部署进行动态调整（locality, 相同前缀的数据存在一起，可以做预取优化）。用户可以动态控制何时落盘，何时从磁盘读取。其开源单机实现的版本是著名的leveldb。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://zhaojiabei.ink/image/Tablet.png">
 <meta property="article:published_time" content="2022-04-10T13:24:22.000Z">
-<meta property="article:modified_time" content="2022-04-10T06:56:16.135Z">
+<meta property="article:modified_time" content="2022-04-10T07:26:21.123Z">
 <meta property="article:author" content="赵家贝">
 <meta property="article:tag" content="读论文">
 <meta name="twitter:card" content="summary">
@@ -118,7 +118,7 @@
         
   
     <h1 class="post-title" itemprop="name">
-      布隆过滤器
+      Bigtable论文阅读
     </h1>
     <div class="post-title-bar">
       <ul>
@@ -155,16 +155,39 @@
 <li>存储元数据，各个表的列族信息</li>
 <li>存储访问控制列表</li>
 </ul>
-<h3 id="Tablet-分布"><a href="#Tablet-分布" class="headerlink" title="Tablet 分布"></a>Tablet 分布</h3><p><img src="/image/Tablet.png" alt="tablet"><br>Chubby文件，存储root tablet 信息。<br>root tablet，一系列元数据表中的第一个表，存其他元数据表中tablet的位置信息，不会分裂。<br>其他元数据表的tablet。可以索引到用户的tablet。</p>
-<h3 id="Tablet-分配"><a href="#Tablet-分配" class="headerlink" title="Tablet 分配"></a>Tablet 分配</h3><p>客户端直接跟Tablet服务器沟通，绕过master。<br>Chubby 有个文件锁，标志着该tabelt在工作，如果 Tablet 丢失了Chubby上的独占锁，就认为它已经不在工作，master会重新分配。<br>Master可以了解整个集群的数据分布，可以做负载均衡，Tablet分配，服务器加入和推出。Master发现tablet的文件锁被丢失了，就会自己去占领这个锁，判断是Chubby宕机还是服务器宕机。Tablets集合变化：增加删除，合并，分裂。</p>
+<h3 id="Tablet-分布"><a href="#Tablet-分布" class="headerlink" title="Tablet 分布"></a>Tablet 分布</h3><p><img src="/image/Tablet.png" alt="tablet"><br>Chubby文件，存储root tablet 信息。</p>
+<p>root tablet，一系列元数据表中的第一个表，存其他元数据表中tablet的位置信息，不会分裂。</p>
+<p>其他元数据表的tablet。可以索引到用户的tablet。</p>
+<p>客户端直接跟Tablet服务器沟通，绕过master。客户端会缓存Table的位置信息，通过跟Chubby沟通得到。</p>
+<h3 id="Tablet-分配"><a href="#Tablet-分配" class="headerlink" title="Tablet 分配"></a>Tablet 分配</h3><p>Chubby 有个文件锁，标志着该tabelt在工作，如果 Tablet 丢失了Chubby上的独占锁，就认为它已经不在工作，master会重新分配。<br>Master可以了解整个集群的数据分布，可以做负载均衡，Tablet分配，服务器加入和推出。Master发现tablet的文件锁被丢失了，就会自己去占领这个锁，判断是Chubby宕机还是服务器宕机。Tablets集合变化：增加删除，合并，分裂。</p>
 <p>Master启动：Master获得Master锁，扫描chbby判断服务集群状态，与所有Tablet服务器通信获得Tablet分配的状态。（自引导）。<br>分裂：Tablet表太大或者访问太频繁会导致分裂。首先commit分裂操作到Metadata表中，然后通知master服务器。如果通知没成功，master会要求装载这个的子表，新的Tablet服务器加载子表的时候会查询Metadata表，发现要加载的表信息不完整，会进一步通知master。</p>
 <h3 id="Tablet-服务"><a href="#Tablet-服务" class="headerlink" title="Tablet 服务"></a>Tablet 服务</h3><p>![tablet_server][/image/TabletRepresentation.png]<br>Tablet底层是LSM Tree。可以去看leveldb实现<br>读写操作写入WAL，数据写入内存表memtable，dump到磁盘上，<br>写操作要到Chubby鉴权，会有客户端缓存。提交之后会插入到memtable。<br>读操作要靠合并SSTable和memtable视图，合并效率很高。<br>合并和分割时，读写仍然可以进行。</p>
 <h3 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h3><p>memtable大小太大时触发压缩变成SSTable。<br>后台有合并压缩进程，定时把SSTable文件删除生成新的压缩文件。叫做主压缩。<br>定期回收内存资源和磁盘资源。</p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><h3 id="本地化，Locality-Groups"><a href="#本地化，Locality-Groups" class="headerlink" title="本地化，Locality Groups"></a>本地化，Locality Groups</h3><p>客户端操作，可以分配不同列族到一个Locality group中，为每个group生成单独的SSTable，不关联的数据不用互相读。<br>可以指定某些数据应该被常驻在内存中。</p>
+<h3 id="压缩-1"><a href="#压缩-1" class="headerlink" title="压缩"></a>压缩</h3><p>可以控制group的压缩算法，两端自定义压缩。</p>
+<h3 id="读缓存"><a href="#读缓存" class="headerlink" title="读缓存"></a>读缓存</h3><p>Tablet服务器双层缓存，扫描缓存是高层缓存，缓存tablet服务器向SSTable请求得到的kv对。块缓存是底层缓存，缓存得到的SSTables块。</p>
+<h3 id="Bloom-filters"><a href="#Bloom-filters" class="headerlink" title="Bloom filters"></a>Bloom filters</h3><p>查询某个SSTables是否含有本次需要的行列数据。</p>
+<h3 id="Commit-日志实现"><a href="#Commit-日志实现" class="headerlink" title="Commit 日志实现"></a>Commit 日志实现</h3><p>每个Tablet一个log还是一个Tablet服务器一个log？</p>
+<p>防止大量并发写，为每个tablet server 维护一个commit log。</p>
+<p>使得恢复非常困难。为了解决这个问题，对log进行排序，每个tablet的mutation都是连续的，加速恢复进程。</p>
+<p>log本身也有序列号，master负责协调。</p>
+<h3 id="加速恢复"><a href="#加速恢复" class="headerlink" title="加速恢复"></a>加速恢复</h3><p>在下线前Server会做两次compaction，第一次完成后会停止对外服务。在加载到新的Server中，只需要读磁盘就可以了，不需要从commit log中进行恢复了。</p>
+<h3 id="利用不可变性"><a href="#利用不可变性" class="headerlink" title="利用不可变性"></a>利用不可变性</h3><p>SSTable不可变。读SSTable不需要并发控制。GC时直接删除SSTable就可以。</p>
+<p>memtable为了减少读竞争，设计成Copy on write。</p>
+<h2 id="经验"><a href="#经验" class="headerlink" title="经验"></a>经验</h2><h3 id="大的分布式系统带来各种错误"><a href="#大的分布式系统带来各种错误" class="headerlink" title="大的分布式系统带来各种错误"></a>大的分布式系统带来各种错误</h3><ul>
+<li>内存网络</li>
+<li>不对称的网络分区</li>
+<li>时钟误差累计</li>
+<li>依赖的其他服务的bug</li>
+<li>计划和非计划的硬件维护</li>
+</ul>
+<h3 id="谨慎使用新特性"><a href="#谨慎使用新特性" class="headerlink" title="谨慎使用新特性"></a>谨慎使用新特性</h3><p>社区发布了新特性，要等大量测试和社区稳定，如果不是很了解就不要着急使用。</p>
+<h3 id="系统级监控很重要"><a href="#系统级监控很重要" class="headerlink" title="系统级监控很重要"></a>系统级监控很重要</h3><h3 id="保持设计简洁"><a href="#保持设计简洁" class="headerlink" title="保持设计简洁"></a>保持设计简洁</h3><p>简单设计会带来价值。</p>
 
             <div class="post-copyright">
     <div class="content">
-        <p>最后更新： 2022年04月10日 06:56</p>
-        <p>原始链接： <a class="post-url" href="/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="布隆过滤器">https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</a></p>
+        <p>最后更新： 2022年04月10日 07:26</p>
+        <p>原始链接： <a class="post-url" href="/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="Bigtable论文阅读">https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</a></p>
         <footer>
             <a href="https://zhaojiabei.ink">
                 <img src="/images/logo.png" alt="赵家贝">
@@ -190,7 +213,7 @@
     <div class="post-share-list" id="share-list">
         <ul class="share-icons">
           <li>
-            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/&title=《布隆过滤器》 — 赵家贝的博客&pic=https://s3.bmp.ovh/imgs/2022/04/10/af4cd8d8e5c2cc91.jpg" data-title="微博">
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/&title=《Bigtable论文阅读》 — 赵家贝的博客&pic=https://s3.bmp.ovh/imgs/2022/04/10/af4cd8d8e5c2cc91.jpg" data-title="微博">
               <i class="fa fa-weibo"></i>
             </a>
           </li>
@@ -200,7 +223,7 @@
             </a>
           </li>
           <li>
-            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/&title=《布隆过滤器》 — 赵家贝的博客&source=" data-title="QQ">
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/&title=《Bigtable论文阅读》 — 赵家贝的博客&source=" data-title="QQ">
               <i class="fa fa-qq"></i>
             </a>
           </li>
@@ -210,7 +233,7 @@
             </a>
           </li>
           <li>
-            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《布隆过滤器》 — 赵家贝的博客&url=https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/&via=https://zhaojiabei.ink" data-title="Twitter">
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Bigtable论文阅读》 — 赵家贝的博客&url=https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/&via=https://zhaojiabei.ink" data-title="Twitter">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
@@ -250,7 +273,7 @@
 
     <aside class="post-toc-pos post-toc-top" id="post-toc">
         <nav class="post-toc-wrap">
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%89%8D%E8%A8%80"><span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="post-toc-text">数据模型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Rows"><span class="post-toc-text">Rows</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%88%97%E6%97%8F"><span class="post-toc-text">列族</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%97%B6%E9%97%B4%E6%88%B3"><span class="post-toc-text">时间戳</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Tablet-%E5%88%86%E5%B8%83"><span class="post-toc-text">Tablet 分布</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Tablet-%E5%88%86%E9%85%8D"><span class="post-toc-text">Tablet 分配</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Tablet-%E6%9C%8D%E5%8A%A1"><span class="post-toc-text">Tablet 服务</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8E%8B%E7%BC%A9"><span class="post-toc-text">压缩</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%89%8D%E8%A8%80"><span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="post-toc-text">数据模型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Rows"><span class="post-toc-text">Rows</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%88%97%E6%97%8F"><span class="post-toc-text">列族</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%97%B6%E9%97%B4%E6%88%B3"><span class="post-toc-text">时间戳</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Tablet-%E5%88%86%E5%B8%83"><span class="post-toc-text">Tablet 分布</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Tablet-%E5%88%86%E9%85%8D"><span class="post-toc-text">Tablet 分配</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Tablet-%E6%9C%8D%E5%8A%A1"><span class="post-toc-text">Tablet 服务</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8E%8B%E7%BC%A9"><span class="post-toc-text">压缩</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BC%98%E5%8C%96"><span class="post-toc-text">优化</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9C%AC%E5%9C%B0%E5%8C%96%EF%BC%8CLocality-Groups"><span class="post-toc-text">本地化，Locality Groups</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8E%8B%E7%BC%A9-1"><span class="post-toc-text">压缩</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%AF%BB%E7%BC%93%E5%AD%98"><span class="post-toc-text">读缓存</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Bloom-filters"><span class="post-toc-text">Bloom filters</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Commit-%E6%97%A5%E5%BF%97%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">Commit 日志实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8A%A0%E9%80%9F%E6%81%A2%E5%A4%8D"><span class="post-toc-text">加速恢复</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%88%A9%E7%94%A8%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%80%A7"><span class="post-toc-text">利用不可变性</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%BB%8F%E9%AA%8C"><span class="post-toc-text">经验</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%A4%A7%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E5%B8%A6%E6%9D%A5%E5%90%84%E7%A7%8D%E9%94%99%E8%AF%AF"><span class="post-toc-text">大的分布式系统带来各种错误</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%B0%A8%E6%85%8E%E4%BD%BF%E7%94%A8%E6%96%B0%E7%89%B9%E6%80%A7"><span class="post-toc-text">谨慎使用新特性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%BA%A7%E7%9B%91%E6%8E%A7%E5%BE%88%E9%87%8D%E8%A6%81"><span class="post-toc-text">系统级监控很重要</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BF%9D%E6%8C%81%E8%AE%BE%E8%AE%A1%E7%AE%80%E6%B4%81"><span class="post-toc-text">保持设计简洁</span></a></li></ol></li></ol>
         </nav>
     </aside>
     

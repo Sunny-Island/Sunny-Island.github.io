@@ -1,5 +1,5 @@
 ---
-title: 布隆过滤器
+title: Bigtable论文阅读
 date: 2022-4-10 13:24:22
 tags: 
 - 读论文
@@ -42,11 +42,16 @@ Chubby，类似于ZK，Paxos协议，用途：
 ### Tablet 分布
 ![tablet](/image/Tablet.png)
 Chubby文件，存储root tablet 信息。
+
 root tablet，一系列元数据表中的第一个表，存其他元数据表中tablet的位置信息，不会分裂。
+
 其他元数据表的tablet。可以索引到用户的tablet。
 
+客户端直接跟Tablet服务器沟通，绕过master。客户端会缓存Table的位置信息，通过跟Chubby沟通得到。
+
+
 ### Tablet 分配
-客户端直接跟Tablet服务器沟通，绕过master。
+
 Chubby 有个文件锁，标志着该tabelt在工作，如果 Tablet 丢失了Chubby上的独占锁，就认为它已经不在工作，master会重新分配。
 Master可以了解整个集群的数据分布，可以做负载均衡，Tablet分配，服务器加入和推出。Master发现tablet的文件锁被丢失了，就会自己去占领这个锁，判断是Chubby宕机还是服务器宕机。Tablets集合变化：增加删除，合并，分裂。
 
@@ -65,4 +70,54 @@ Tablet底层是LSM Tree。可以去看leveldb实现
 memtable大小太大时触发压缩变成SSTable。
 后台有合并压缩进程，定时把SSTable文件删除生成新的压缩文件。叫做主压缩。
 定期回收内存资源和磁盘资源。
+
+## 优化
+### 本地化，Locality Groups
+
+客户端操作，可以分配不同列族到一个Locality group中，为每个group生成单独的SSTable，不关联的数据不用互相读。
+可以指定某些数据应该被常驻在内存中。
+### 压缩
+可以控制group的压缩算法，两端自定义压缩。
+
+### 读缓存
+Tablet服务器双层缓存，扫描缓存是高层缓存，缓存tablet服务器向SSTable请求得到的kv对。块缓存是底层缓存，缓存得到的SSTables块。
+
+### Bloom filters
+查询某个SSTables是否含有本次需要的行列数据。
+
+### Commit 日志实现
+每个Tablet一个log还是一个Tablet服务器一个log？
+
+防止大量并发写，为每个tablet server 维护一个commit log。
+
+使得恢复非常困难。为了解决这个问题，对log进行排序，每个tablet的mutation都是连续的，加速恢复进程。
+
+log本身也有序列号，master负责协调。
+
+### 加速恢复
+在下线前Server会做两次compaction，第一次完成后会停止对外服务。在加载到新的Server中，只需要读磁盘就可以了，不需要从commit log中进行恢复了。
+
+### 利用不可变性
+
+SSTable不可变。读SSTable不需要并发控制。GC时直接删除SSTable就可以。
+
+memtable为了减少读竞争，设计成Copy on write。
+
+## 经验
+
+### 大的分布式系统带来各种错误
+
+* 内存网络
+* 不对称的网络分区
+* 时钟误差累计
+* 依赖的其他服务的bug
+* 计划和非计划的硬件维护
+
+### 谨慎使用新特性
+社区发布了新特性，要等大量测试和社区稳定，如果不是很了解就不要着急使用。
+
+### 系统级监控很重要
+### 保持设计简洁
+简单设计会带来价值。
+
 

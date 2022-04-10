@@ -3,23 +3,25 @@
 <head>
   <meta charset="utf-8">
   
-  <title>哈希小知识 | 赵家贝的博客</title>
+  <title>布隆过滤器 | 赵家贝的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <meta name="keywords" content="Double" />
   
-  <meta name="description" content="Hash散列函数为什么要对素数取余假设散列函数是$$hash(key) &#x3D; key % M&#x3D; key-xm\$$假设key和M有公约数g$$key &#x3D; ag,m &#x3D;bg\hash(key)&#x3D;key-xm &#x3D; key-[\frac{a}{b}]m\0\le \frac{a}{b}\le a$$显然$hash(key)$的取值只有$a+1$种可能，在[0, m-1]上就不是均匀分布了。">
+  <meta name="description" content="前言Bigtable是管理大量结构化数据的分布式存储系统。是一个稀疏的、分布式的、持久化存储的多维度排序Map。规模：PB级别数据，数千台机器。性质：广泛应用、可扩展性、高可用，高性能，CAP？不支持传统关系模型，但可以根据数据格式和部署进行动态调整（locality, 相同前缀的数据存在一起，可以做预取优化）。用户可以动态控制何时落盘，何时从磁盘读取。其开源单机实现的版本是著名的leveldb。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="哈希小知识">
-<meta property="og:url" content="https://zhaojiabei.ink/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:title" content="布隆过滤器">
+<meta property="og:url" content="https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
 <meta property="og:site_name" content="赵家贝的博客">
-<meta property="og:description" content="Hash散列函数为什么要对素数取余假设散列函数是$$hash(key) &#x3D; key % M&#x3D; key-xm\$$假设key和M有公约数g$$key &#x3D; ag,m &#x3D;bg\hash(key)&#x3D;key-xm &#x3D; key-[\frac{a}{b}]m\0\le \frac{a}{b}\le a$$显然$hash(key)$的取值只有$a+1$种可能，在[0, m-1]上就不是均匀分布了。">
+<meta property="og:description" content="前言Bigtable是管理大量结构化数据的分布式存储系统。是一个稀疏的、分布式的、持久化存储的多维度排序Map。规模：PB级别数据，数千台机器。性质：广泛应用、可扩展性、高可用，高性能，CAP？不支持传统关系模型，但可以根据数据格式和部署进行动态调整（locality, 相同前缀的数据存在一起，可以做预取优化）。用户可以动态控制何时落盘，何时从磁盘读取。其开源单机实现的版本是著名的leveldb。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-03-13T21:04:20.000Z">
+<meta property="og:image" content="https://zhaojiabei.ink/image/Tablet.png">
+<meta property="article:published_time" content="2022-04-10T13:24:22.000Z">
 <meta property="article:modified_time" content="2022-04-10T06:56:16.135Z">
 <meta property="article:author" content="赵家贝">
-<meta property="article:tag" content="Hash">
+<meta property="article:tag" content="读论文">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhaojiabei.ink/image/Tablet.png">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -109,20 +111,20 @@
     </div>
 </header>
       <div class="outer">
-        <section id="main" class="body-wrap"><article id="post-哈希小知识" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main" class="body-wrap"><article id="post-BigTable论文阅读" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="post-title" itemprop="name">
-      哈希小知识
+      布隆过滤器
     </h1>
     <div class="post-title-bar">
       <ul>
           
         <li>
-          <i class="fa fa-calendar"></i>  2021-03-13
+          <i class="fa fa-calendar"></i>  2022-04-10
         </li>
         <li>
           <i class="fa fa-eye"></i>
@@ -138,12 +140,31 @@
     <div class="article-entry post-content" itemprop="articleBody">
       
             
-            <h3 id="Hash散列函数为什么要对素数取余"><a href="#Hash散列函数为什么要对素数取余" class="headerlink" title="Hash散列函数为什么要对素数取余"></a>Hash散列函数为什么要对素数取余</h3><p>假设散列函数是<br>$$<br>hash(key) = key % M= key-xm\<br>$$<br>假设key和M有公约数g<br>$$<br>key = ag,m =bg\<br>hash(key)=key-xm = key-[\frac{a}{b}]m\<br>0\le \frac{a}{b}\le a<br>$$<br>显然$hash(key)$的取值只有$a+1$种可能，在[0, m-1]上就不是均匀分布了。</p>
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Bigtable是管理大量结构化数据的分布式存储系统。是一个稀疏的、分布式的、持久化存储的多维度排序Map。<br>规模：PB级别数据，数千台机器。<br>性质：广泛应用、可扩展性、高可用，高性能，CAP？<br>不支持传统关系模型，但可以根据数据格式和部署进行动态调整（locality, 相同前缀的数据存在一起，可以做预取优化）。用户可以动态控制何时落盘，何时从磁盘读取。<br>其开源单机实现的版本是著名的leveldb。</p>
+<h2 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(row:<span class="keyword">string</span>, column:<span class="keyword">string</span>, time:<span class="keyword">int64</span>) -&gt; <span class="keyword">string</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Rows"><a href="#Rows" class="headerlink" title="Rows"></a>Rows</h3><p>在单个Row下进行的读写保证是原子性的，并发更新行时方便用户编程。排序是通过对行字典序排列的。每一部分行组成tablet，是分布式存储和加载的最小单位。如果只想找几个行，就只需要几台机器的通讯就可以做到。性质相同的数据可以做连续的存储</p>
+<h3 id="列族"><a href="#列族" class="headerlink" title="列族"></a>列族</h3><p>多个列组成的集合叫做列族。列族是访问控制的基本单位，列族层面可以控制、统计磁盘内存使用，上述的控制权限能帮助我们管理不同类型的应用：我们允许一些应用可以添加新的基本数据、一些应用可以读取基本数据并创建继承的列族、一些应用则只允许浏览数据。表可以有无限多的列，但希望只有上百个列族。同一列族下的数据往往是相同类型的，这样方便压缩。</p>
+<h3 id="时间戳"><a href="#时间戳" class="headerlink" title="时间戳"></a>时间戳</h3><p>表的每一个数据都可以包含不同版本，可以通过配置列族的参数来做GC，制定保留最近的三个版本等等。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>GFS，分布式文件系统，Bigtable的表存储文件是SSTable格式的，SSTable是持久化的、排序的、不可更改的Map结构，是分块存储的，根据索引可以加载到内存。</p>
+<p>Chubby，类似于ZK，Paxos协议，用途：</p>
+<ul>
+<li>选主</li>
+<li>存储Bigtable自引导</li>
+<li>服务发现，服务器上线下线</li>
+<li>存储元数据，各个表的列族信息</li>
+<li>存储访问控制列表</li>
+</ul>
+<h3 id="Tablet-分布"><a href="#Tablet-分布" class="headerlink" title="Tablet 分布"></a>Tablet 分布</h3><p><img src="/image/Tablet.png" alt="tablet"><br>Chubby文件，存储root tablet 信息。<br>root tablet，一系列元数据表中的第一个表，存其他元数据表中tablet的位置信息，不会分裂。<br>其他元数据表的tablet。可以索引到用户的tablet。</p>
+<h3 id="Tablet-分配"><a href="#Tablet-分配" class="headerlink" title="Tablet 分配"></a>Tablet 分配</h3><p>客户端直接跟Tablet服务器沟通，绕过master。<br>Chubby 有个文件锁，标志着该tabelt在工作，如果 Tablet 丢失了Chubby上的独占锁，就认为它已经不在工作，master会重新分配。<br>Master可以了解整个集群的数据分布，可以做负载均衡，Tablet分配，服务器加入和推出。Master发现tablet的文件锁被丢失了，就会自己去占领这个锁，判断是Chubby宕机还是服务器宕机。Tablets集合变化：增加删除，合并，分裂。</p>
+<p>Master启动：Master获得Master锁，扫描chbby判断服务集群状态，与所有Tablet服务器通信获得Tablet分配的状态。（自引导）。<br>分裂：Tablet表太大或者访问太频繁会导致分裂。首先commit分裂操作到Metadata表中，然后通知master服务器。如果通知没成功，master会要求装载这个的子表，新的Tablet服务器加载子表的时候会查询Metadata表，发现要加载的表信息不完整，会进一步通知master。</p>
+<h3 id="Tablet-服务"><a href="#Tablet-服务" class="headerlink" title="Tablet 服务"></a>Tablet 服务</h3><p>![tablet_server][/image/TabletRepresentation.png]<br>Tablet底层是LSM Tree。可以去看leveldb实现<br>读写操作写入WAL，数据写入内存表memtable，dump到磁盘上，<br>写操作要到Chubby鉴权，会有客户端缓存。提交之后会插入到memtable。<br>读操作要靠合并SSTable和memtable视图，合并效率很高。<br>合并和分割时，读写仍然可以进行。</p>
+<h3 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h3><p>memtable大小太大时触发压缩变成SSTable。<br>后台有合并压缩进程，定时把SSTable文件删除生成新的压缩文件。叫做主压缩。<br>定期回收内存资源和磁盘资源。</p>
 
             <div class="post-copyright">
     <div class="content">
         <p>最后更新： 2022年04月10日 06:56</p>
-        <p>原始链接： <a class="post-url" href="/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/" title="哈希小知识">https://zhaojiabei.ink/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/</a></p>
+        <p>原始链接： <a class="post-url" href="/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="布隆过滤器">https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</a></p>
         <footer>
             <a href="https://zhaojiabei.ink">
                 <img src="/images/logo.png" alt="赵家贝">
@@ -169,7 +190,7 @@
     <div class="post-share-list" id="share-list">
         <ul class="share-icons">
           <li>
-            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://zhaojiabei.ink/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/&title=《哈希小知识》 — 赵家贝的博客&pic=https://raw.githubusercontent.com/Sunny-Island/Resources/main/images/hash01.jpg" data-title="微博">
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/&title=《布隆过滤器》 — 赵家贝的博客&pic=https://s3.bmp.ovh/imgs/2022/04/10/af4cd8d8e5c2cc91.jpg" data-title="微博">
               <i class="fa fa-weibo"></i>
             </a>
           </li>
@@ -179,22 +200,22 @@
             </a>
           </li>
           <li>
-            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://zhaojiabei.ink/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/&title=《哈希小知识》 — 赵家贝的博客&source=" data-title="QQ">
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/&title=《布隆过滤器》 — 赵家贝的博客&source=" data-title="QQ">
               <i class="fa fa-qq"></i>
             </a>
           </li>
           <li>
-            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://zhaojiabei.ink/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/" data-title="Facebook">
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" data-title="Facebook">
               <i class="fa fa-facebook"></i>
             </a>
           </li>
           <li>
-            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《哈希小知识》 — 赵家贝的博客&url=https://zhaojiabei.ink/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/&via=https://zhaojiabei.ink" data-title="Twitter">
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《布隆过滤器》 — 赵家贝的博客&url=https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/&via=https://zhaojiabei.ink" data-title="Twitter">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
           <li>
-            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://zhaojiabei.ink/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/" data-title="Google+">
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" data-title="Google+">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -204,7 +225,7 @@
 <div class="post-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;" id="wxShare-close">×</a>
     <p>扫一扫，分享到微信</p>
-    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://zhaojiabei.ink/2021/03/13/%E5%93%88%E5%B8%8C%E5%B0%8F%E7%9F%A5%E8%AF%86/" alt="微信分享二维码">
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://zhaojiabei.ink/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" alt="微信分享二维码">
 </div>
 
 <div class="mask"></div>
@@ -216,7 +237,7 @@
   <li class="article-footer-tags">
     <i class="fa fa-tags"></i>
       
-    <a href="/tags/Hash/" class="color5">Hash</a>
+    <a href="/tags/读论文/" class="color4">读论文</a>
       
   </li>
 
@@ -229,26 +250,16 @@
 
     <aside class="post-toc-pos post-toc-top" id="post-toc">
         <nav class="post-toc-wrap">
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Hash%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%AF%B9%E7%B4%A0%E6%95%B0%E5%8F%96%E4%BD%99"><span class="post-toc-text">Hash散列函数为什么要对素数取余</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%89%8D%E8%A8%80"><span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="post-toc-text">数据模型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Rows"><span class="post-toc-text">Rows</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%88%97%E6%97%8F"><span class="post-toc-text">列族</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%97%B6%E9%97%B4%E6%88%B3"><span class="post-toc-text">时间戳</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Tablet-%E5%88%86%E5%B8%83"><span class="post-toc-text">Tablet 分布</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Tablet-%E5%88%86%E9%85%8D"><span class="post-toc-text">Tablet 分配</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Tablet-%E6%9C%8D%E5%8A%A1"><span class="post-toc-text">Tablet 服务</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8E%8B%E7%BC%A9"><span class="post-toc-text">压缩</span></a></li></ol></li></ol>
         </nav>
     </aside>
     
 
 <nav id="article-nav">
   
-    <a href="/2021/03/30/CS144%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
-
-      <span class="article-nav-title">
-        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
-        
-          CS144笔记(3)
-        
-      </span>
-    </a>
   
-  
-    <a href="/2021/03/12/CS144%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
-      <span class="article-nav-title">CS144笔记(2)</span>
+    <a href="/2022/02/21/%E4%B9%9D%E5%9D%A4%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96%E5%A4%A7%E8%B5%9B%E7%AC%AC%E4%B8%80%E5%B1%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">九坤并行程序优化大赛第一届经验总结</span>
       <i class="fa fa-hand-o-right" aria-hidden="true"></i>
     </a>
   

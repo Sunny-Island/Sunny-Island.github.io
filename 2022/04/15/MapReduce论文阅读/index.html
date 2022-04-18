@@ -3,26 +3,25 @@
 <head>
   <meta charset="utf-8">
   
-  <title>布隆过滤器 | 赵家贝的博客</title>
+  <title>MapReduce论文阅读 | 赵家贝的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <meta name="keywords" content="Double" />
   
-  <meta name="description" content="布隆过滤器布隆过滤器（Bloom Filter）本质上是由长度为 m 的位向量或位列表（仅包含 0 或 1 位值的列表）组成，最初所有的值均设置为 0，为了将数据项添加到布隆过滤器中，我们会提供 K 个不同的哈希函数，并将结果位置上对应位的值置为 “1”。在前面所提到的哈希表中，我们使用的是单个哈希函数，因此只能输出单个索引值。而对于布隆过滤器来说，我们将使用多个哈希函数，这将会产生多个索引值。">
+  <meta name="description" content="前言MapReduce 是对大规模并行计算的抽象。为了解决多机器并行、网络通信、处理错误、提高执行效率 等通用性问题的框架内。 工程实现  MR库首先把文件切分成块（16-64MB），之后，程序会在多个节点上启动程序的多个副本 有Main节点，最为特殊。将M个Map和R个Reduce分配到其他节点上。 被分配Map任务的节点读取数据，产生key&#x2F;value对缓存在内存中。 缓存中的数据分成R块写入">
 <meta property="og:type" content="article">
-<meta property="og:title" content="布隆过滤器">
-<meta property="og:url" content="https://zhaojiabei.ink/2021/10/18/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/index.html">
+<meta property="og:title" content="MapReduce论文阅读">
+<meta property="og:url" content="https://zhaojiabei.ink/2022/04/15/MapReduce%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
 <meta property="og:site_name" content="赵家贝的博客">
-<meta property="og:description" content="布隆过滤器布隆过滤器（Bloom Filter）本质上是由长度为 m 的位向量或位列表（仅包含 0 或 1 位值的列表）组成，最初所有的值均设置为 0，为了将数据项添加到布隆过滤器中，我们会提供 K 个不同的哈希函数，并将结果位置上对应位的值置为 “1”。在前面所提到的哈希表中，我们使用的是单个哈希函数，因此只能输出单个索引值。而对于布隆过滤器来说，我们将使用多个哈希函数，这将会产生多个索引值。">
+<meta property="og:description" content="前言MapReduce 是对大规模并行计算的抽象。为了解决多机器并行、网络通信、处理错误、提高执行效率 等通用性问题的框架内。 工程实现  MR库首先把文件切分成块（16-64MB），之后，程序会在多个节点上启动程序的多个副本 有Main节点，最为特殊。将M个Map和R个Reduce分配到其他节点上。 被分配Map任务的节点读取数据，产生key&#x2F;value对缓存在内存中。 缓存中的数据分成R块写入">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://zhaojiabei.ink/image/bloom_filter.png">
-<meta property="og:image" content="https://zhaojiabei.ink/image/bf_false_positive.svg">
-<meta property="article:published_time" content="2021-10-18T20:24:22.000Z">
+<meta property="og:image" content="https://zhaojiabei.ink/image/Mapreduce.png">
+<meta property="article:published_time" content="2022-04-15T18:24:22.000Z">
 <meta property="article:modified_time" content="2022-04-18T13:05:45.091Z">
 <meta property="article:author" content="赵家贝">
-<meta property="article:tag" content="索引">
+<meta property="article:tag" content="读论文">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://zhaojiabei.ink/image/bloom_filter.png">
+<meta name="twitter:image" content="https://zhaojiabei.ink/image/Mapreduce.png">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -112,20 +111,20 @@
     </div>
 </header>
       <div class="outer">
-        <section id="main" class="body-wrap"><article id="post-布隆过滤器" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main" class="body-wrap"><article id="post-MapReduce论文阅读" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="post-title" itemprop="name">
-      布隆过滤器
+      MapReduce论文阅读
     </h1>
     <div class="post-title-bar">
       <ul>
           
         <li>
-          <i class="fa fa-calendar"></i>  2021-10-18
+          <i class="fa fa-calendar"></i>  2022-04-15
         </li>
         <li>
           <i class="fa fa-eye"></i>
@@ -141,15 +140,31 @@
     <div class="article-entry post-content" itemprop="articleBody">
       
             
-            <h2 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h2><p>布隆过滤器（Bloom Filter）本质上是由长度为 m 的位向量或位列表（仅包含 0 或 1 位值的列表）组成，最初所有的值均设置为 0，为了将数据项添加到布隆过滤器中，我们会提供 K 个不同的哈希函数，并将结果位置上对应位的值置为 “1”。在前面所提到的哈希表中，我们使用的是单个哈希函数，因此只能输出单个索引值。而对于布隆过滤器来说，我们将使用多个哈希函数，这将会产生多个索引值。</p>
-<p><img src="/image/bloom_filter.png" alt="test"><br>如果多个哈希值对应的位置都已经被置１，则该元素可能存在于集合中。如果有１位不符合，则说明该元素不在集合中。</p>
-<h3 id="布隆过滤器的误判率"><a href="#布隆过滤器的误判率" class="headerlink" title="布隆过滤器的误判率"></a>布隆过滤器的误判率</h3><p>布隆过滤器的误判率由下列公式给出。<br>据此可以计算最佳函数个数，在保证误判率的情况下，布隆过滤器的位列表长度随需要被过滤的元素正比增加。<br><img src="/image/bf_false_positive.svg" alt="test"></p>
-<h3 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h3><p>在线计算网站 <a target="_blank" rel="noopener" href="https://hur.st/bloomfilter/">https://hur.st/bloomfilter/</a><br>Java库 Guava <a target="_blank" rel="noopener" href="https://github.com/google/guava">https://github.com/google/guava</a></p>
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>MapReduce 是对大规模并行计算的抽象。为了解决多机器并行、网络通信、处理错误、提高执行效率 等通用性问题的框架内。</p>
+<h2 id="工程实现"><a href="#工程实现" class="headerlink" title="工程实现"></a>工程实现</h2><p><img src="/image/Mapreduce.png" alt="MR"></p>
+<ol>
+<li>MR库首先把文件切分成块（16-64MB），之后，程序会在多个节点上启动程序的多个副本</li>
+<li>有Main节点，最为特殊。将M个Map和R个Reduce分配到其他节点上。</li>
+<li>被分配Map任务的节点读取数据，产生key/value对缓存在内存中。</li>
+<li>缓存中的数据分成R块写入磁盘。（此处会有大量shuffle，大量的小文件读写）。</li>
+<li>Reduce节点接受RPC，读本地磁盘中的缓存数据，之后按Key排序。</li>
+<li>排序后传给Reduce函数。</li>
+<li>Main节点管理所有的节点，和每个Map Reduce任务的进行情况。</li>
+<li>Map任务产生的中间文件的位置通过Mai传n给Reduce任务。主节点要存储每个Map任务的R个文件。</li>
+</ol>
+<h2 id="工程优化"><a href="#工程优化" class="headerlink" title="工程优化"></a>工程优化</h2><h3 id="容错"><a href="#容错" class="headerlink" title="容错"></a>容错</h3><h4 id="Map崩溃"><a href="#Map崩溃" class="headerlink" title="Map崩溃"></a>Map崩溃</h4><p>通过心跳关联所有的worker节点，同时维护所有工作的进行状态和成功状态，超时之后重新进行任务。Map产生的中间态是临时文件。</p>
+<h4 id="Reduce崩溃"><a href="#Reduce崩溃" class="headerlink" title="Reduce崩溃"></a>Reduce崩溃</h4><p>恢复之后要写一个新的文件，防止与原来的文件冲突。</p>
+<h4 id="main崩溃"><a href="#main崩溃" class="headerlink" title="main崩溃"></a>main崩溃</h4><p>维护一个checkpoint，定期把状态机dump，崩溃之后从最新的checkpoint恢复。</p>
+<h4 id="副作用"><a href="#副作用" class="headerlink" title="副作用"></a>副作用</h4><p>Map文件也会有冲突，需要原子性。先写到临时文件，然后一次rename原子提交该文件。</p>
+<h3 id="加速运行"><a href="#加速运行" class="headerlink" title="加速运行"></a>加速运行</h3><p>网络优化：Map会发生2M次网络调用，Reduce发生M*R次网络调用，可以通过流式的方式，Map节点完成之后，Main立刻通知Reduce去拉取。</p>
+<p>Map 和 GFS节点是同一个节点，就可以减少网络传输。</p>
+<p>任务粒度划分。</p>
+<p>执行任务过长，多个节点执行相同的任务，解决长尾问题。</p>
 
             <div class="post-copyright">
     <div class="content">
         <p>最后更新： 2022年04月18日 13:05</p>
-        <p>原始链接： <a class="post-url" href="/2021/10/18/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" title="布隆过滤器">https://zhaojiabei.ink/2021/10/18/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</a></p>
+        <p>原始链接： <a class="post-url" href="/2022/04/15/MapReduce%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="MapReduce论文阅读">https://zhaojiabei.ink/2022/04/15/MapReduce%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</a></p>
         <footer>
             <a href="https://zhaojiabei.ink">
                 <img src="/images/logo.png" alt="赵家贝">
@@ -175,7 +190,7 @@
     <div class="post-share-list" id="share-list">
         <ul class="share-icons">
           <li>
-            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://zhaojiabei.ink/2021/10/18/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/&title=《布隆过滤器》 — 赵家贝的博客&pic=https://raw.githubusercontent.com/Sunny-Island/Resources/main/images/bloom_filter.png" data-title="微博">
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://zhaojiabei.ink/2022/04/15/MapReduce%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/&title=《MapReduce论文阅读》 — 赵家贝的博客&pic=https://s3.bmp.ovh/imgs/2022/04/15/0cdf5b07488f985a.png" data-title="微博">
               <i class="fa fa-weibo"></i>
             </a>
           </li>
@@ -185,22 +200,22 @@
             </a>
           </li>
           <li>
-            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://zhaojiabei.ink/2021/10/18/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/&title=《布隆过滤器》 — 赵家贝的博客&source=" data-title="QQ">
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://zhaojiabei.ink/2022/04/15/MapReduce%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/&title=《MapReduce论文阅读》 — 赵家贝的博客&source=" data-title="QQ">
               <i class="fa fa-qq"></i>
             </a>
           </li>
           <li>
-            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://zhaojiabei.ink/2021/10/18/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" data-title="Facebook">
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://zhaojiabei.ink/2022/04/15/MapReduce%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" data-title="Facebook">
               <i class="fa fa-facebook"></i>
             </a>
           </li>
           <li>
-            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《布隆过滤器》 — 赵家贝的博客&url=https://zhaojiabei.ink/2021/10/18/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/&via=https://zhaojiabei.ink" data-title="Twitter">
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《MapReduce论文阅读》 — 赵家贝的博客&url=https://zhaojiabei.ink/2022/04/15/MapReduce%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/&via=https://zhaojiabei.ink" data-title="Twitter">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
           <li>
-            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://zhaojiabei.ink/2021/10/18/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" data-title="Google+">
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://zhaojiabei.ink/2022/04/15/MapReduce%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" data-title="Google+">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -210,7 +225,7 @@
 <div class="post-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;" id="wxShare-close">×</a>
     <p>扫一扫，分享到微信</p>
-    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://zhaojiabei.ink/2021/10/18/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/" alt="微信分享二维码">
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://zhaojiabei.ink/2022/04/15/MapReduce%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" alt="微信分享二维码">
 </div>
 
 <div class="mask"></div>
@@ -222,7 +237,7 @@
   <li class="article-footer-tags">
     <i class="fa fa-tags"></i>
       
-    <a href="/tags/索引/" class="color3">索引</a>
+    <a href="/tags/读论文/" class="color4">读论文</a>
       
   </li>
 
@@ -235,26 +250,16 @@
 
     <aside class="post-toc-pos post-toc-top" id="post-toc">
         <nav class="post-toc-wrap">
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="post-toc-text">布隆过滤器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E8%AF%AF%E5%88%A4%E7%8E%87"><span class="post-toc-text">布隆过滤器的误判率</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%B5%84%E6%BA%90"><span class="post-toc-text">资源</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%89%8D%E8%A8%80"><span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%B7%A5%E7%A8%8B%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">工程实现</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%B7%A5%E7%A8%8B%E4%BC%98%E5%8C%96"><span class="post-toc-text">工程优化</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%B9%E9%94%99"><span class="post-toc-text">容错</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Map%E5%B4%A9%E6%BA%83"><span class="post-toc-text">Map崩溃</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Reduce%E5%B4%A9%E6%BA%83"><span class="post-toc-text">Reduce崩溃</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#main%E5%B4%A9%E6%BA%83"><span class="post-toc-text">main崩溃</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%89%AF%E4%BD%9C%E7%94%A8"><span class="post-toc-text">副作用</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8A%A0%E9%80%9F%E8%BF%90%E8%A1%8C"><span class="post-toc-text">加速运行</span></a></li></ol></li></ol>
         </nav>
     </aside>
     
 
 <nav id="article-nav">
   
-    <a href="/2022/02/21/%E4%B9%9D%E5%9D%A4%E5%B9%B6%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%BC%98%E5%8C%96%E5%A4%A7%E8%B5%9B%E7%AC%AC%E4%B8%80%E5%B1%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/" id="article-nav-newer" class="article-nav-link-wrap">
-
-      <span class="article-nav-title">
-        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
-        
-          九坤并行程序优化大赛第一届经验总结
-        
-      </span>
-    </a>
   
-  
-    <a href="/2021/04/24/go-sync%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
-      <span class="article-nav-title">go sync常用方法</span>
+    <a href="/2022/04/10/BigTable%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">Bigtable论文阅读</span>
       <i class="fa fa-hand-o-right" aria-hidden="true"></i>
     </a>
   
